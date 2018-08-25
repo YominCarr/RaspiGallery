@@ -6,28 +6,17 @@
  * Time: 18:19
  */
 
-class Folder
+require_once 'FileSystemEntity.php';
+
+class Folder extends FileSystemEntity
 {
 
-    private $name;
-    private $fullPath;
     private $content;
 
     public function __construct(string $name, string $fullPath, array $content)
     {
-        $this->name = $name;
-        $this->fullPath = $fullPath;
+        parent::__construct($name, $fullPath);
         $this->content = $content;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getFullPath(): string
-    {
-        return $this->fullPath;
     }
 
     public function getContent(): array

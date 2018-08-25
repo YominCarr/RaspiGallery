@@ -6,12 +6,10 @@
  * Time: 18:25
  */
 
-require_once 'FileManager.php';
+require_once 'FileSystemEntity.php';
 
-class Image
+class Image extends FileSystemEntity
 {
-    private $name;
-    private $fullPath;
     private $type;
     private $width;
     private $height;
@@ -19,27 +17,11 @@ class Image
 
     public function __construct(string $name, string $fullPath, int $type, string $width, string $height, string $creationDate)
     {
-        $this->name = $name;
-        $this->fullPath = $fullPath;
+        parent::__construct($name, $fullPath);
         $this->type = $type;
         $this->width = $width;
         $this->height = $height;
         $this->creationData = $creationDate;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getFullPath(): string
-    {
-        return $this->fullPath;
-    }
-
-    public function getRelativePath(FileManager $fileManager): string
-    {
-        return $fileManager->absoluteToRelativePath($this->getFullPath());
     }
 
     public function getType(): int
