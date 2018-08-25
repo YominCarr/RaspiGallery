@@ -49,4 +49,22 @@ class Image extends FileSystemEntity
         $str = "<img src=\"$src\" alt=\"$alt\">";
         return $str;
     }
+
+    public static function createImage(string $name, string $filePath): Image
+    {
+        list($width, $height, $type, $attr) = getimagesize($filePath, $info);
+        if ($type != IMAGETYPE_JPEG && $type != IMAGETYPE_PNG && $type != IMAGETYPE_GIF) {
+            return NULL;
+        }
+        $creationDate = filectime($filePath);
+
+        return new Image($name, $filePath, $type, $width, $height, $creationDate);
+    }
+
+    public static function getDummyImage(FileManager $fileManager): Image
+    {
+        $name = "dummy.png";
+        $filePath = $fileManager->concatPaths(Config::documentRoot, "img/dummy.png");
+        return self::createImage($name, $filePath);
+    }
 }

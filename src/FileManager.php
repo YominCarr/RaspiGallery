@@ -31,13 +31,10 @@ class FileManager
 
                     array_push($folders, new Folder($value, $contentPath, $content));
                 } else {
-                    list($width, $height, $type, $attr) = getimagesize($contentPath, $info);
-                    if ($type != IMAGETYPE_JPEG && $type != IMAGETYPE_PNG && $type != IMAGETYPE_GIF)
-                        continue;
-                    $creationDate = filectime($contentPath);
-
-                    // @todo Check directly for thumbnails
-                    array_push($images, new Image($value, $contentPath, $type, $width, $height, $creationDate));
+                    $image = Image::createImage($value, $contentPath);
+                    if ($image != NULL) {
+                        array_push($images, $image);
+                    }
                 }
             }
         }

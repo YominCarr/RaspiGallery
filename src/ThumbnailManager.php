@@ -18,9 +18,7 @@ class ThumbnailManager
         }
 
         $thumbnailPath = $this->getThumbnailPathForImage($image);
-        list($width, $height, $type, $attr) = getimagesize($thumbnailPath, $info);
-        $creationDate = filectime($thumbnailPath);
-        $thumbnail = new Image($image->getName(), $thumbnailPath, $type, $width, $height, $creationDate);
+        $thumbnail = Image::createImage($image->getName(), $thumbnailPath);
         return $thumbnail;
     }
 

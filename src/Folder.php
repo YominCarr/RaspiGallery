@@ -7,6 +7,7 @@
  */
 
 require_once 'FileSystemEntity.php';
+require_once 'Image.php';
 
 class Folder extends FileSystemEntity
 {
@@ -22,6 +23,17 @@ class Folder extends FileSystemEntity
     public function getContent(): array
     {
         return $this->content;
+    }
+
+    public function getRandomImage(FileManager $fileManager): Image
+    {
+        $s = sizeof($this->content["images"]);
+        if ($s > 0) {
+            $r = rand(1, $s);
+            return $this->content["images"][$r];
+        } else {
+            return Image::getDummyImage($fileManager);
+        }
     }
 
 }
