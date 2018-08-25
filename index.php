@@ -22,5 +22,5 @@ echo printContent($content);
 $thumbnailManager = new ThumbnailManager();
 foreach ($content["images"] as $i) {
     $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($i);
-    print_r($thumbnail);
+    echo "<br>" . $thumbnail->getDisplayHTML($fileManager) . "<br>";
 }

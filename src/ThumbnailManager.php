@@ -31,6 +31,7 @@ class ThumbnailManager
         return $path;
     }
 
+    // @todo Add some checking that found thumbnail has the correct size, otherwise delete and redo perhaps
     private function thumbnailExists(Image $image): bool
     {
         return file_exists($this->getThumbnailPathForImage($image));

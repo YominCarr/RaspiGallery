@@ -20,7 +20,7 @@ class Folder
         $this->content = $content;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }

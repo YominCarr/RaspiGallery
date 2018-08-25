@@ -6,7 +6,7 @@
  * Time: 19:18
  */
 
-function printContent(array $content) : string
+function printContent(array $content): string
 {
     $ret = "<ul>";
     $ret .= printFolders($content["folders"]);
@@ -15,7 +15,7 @@ function printContent(array $content) : string
     return $ret;
 }
 
-function printFolders(array $folders) : string
+function printFolders(array $folders): string
 {
     $ret = "";
     foreach ($folders as $f) {
@@ -26,7 +26,7 @@ function printFolders(array $folders) : string
     return $ret;
 }
 
-function printImages(array $images) : string
+function printImages(array $images): string
 {
     $ret = "";
     foreach ($images as $i) {

@@ -6,6 +6,8 @@
  * Time: 18:25
  */
 
+require_once 'FileManager.php';
+
 class Image
 {
     private $name;
@@ -35,6 +37,11 @@ class Image
         return $this->fullPath;
     }
 
+    public function getRelativePath(FileManager $fileManager): string
+    {
+        return $fileManager->absoluteToRelativePath($this->getFullPath());
+    }
+
     public function getType(): int
     {
         return $this->type;
@@ -48,5 +55,16 @@ class Image
     public function getHeight(): int
     {
         return $this->height;
+    }
+
+    public function getDisplayHTML(FileManager $fileManager): string
+    {
+        $src = $this->getRelativePath($fileManager);
+        $src = $fileManager->pathToUrl($src);
+
+        $alt = $this->getName();
+
+        $str = "<img src=\"$src\" alt=\"$alt\">";
+        return $str;
     }
 }
