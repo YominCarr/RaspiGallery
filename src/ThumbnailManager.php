@@ -12,22 +12,27 @@ class ThumbnailManager
 {
 
     // @todo will probably be private soon
-    public function generateThumbnailIfNeeded(FileManager $fileManager, Image $image): bool
+    public function generateThumbnailIfNeeded(Image $image): bool
     {
-        if (!$this->thumbnailExists($fileManager, $image->getFullPath())) {
-            return $this->createThumbnail($fileManager, $image);
+        if (!$this->thumbnailExists($image)) {
+            return $this->createThumbnail($image);
         }
         return true;
     }
 
-    // @todo this is bullshit! fix
-    private function thumbnailExists(FileManager $fileManager, string $absolutePathToImage): bool
+    private function getThumbnailPathForImage(Image $image): string
     {
-        return false;
-        //return file_exists($fileManager->concatPaths($fileManager->getAbsoluteThumbnailDir(), $absolutePathToImage));
+        $path = $image->getFullPath();
+        $path = str_replace(Config::photoDir, Config::thumbnailDir, $path);
+        return $path;
     }
 
-    private function createThumbnail(FileManager $fileManager, Image $image)
+    private function thumbnailExists(Image $image): bool
+    {
+        return file_exists($this->getThumbnailPathForImage($image));
+    }
+
+    private function createThumbnail(Image $image): bool
     {
         // @todo do we need that?
         //ini_set('memory_limit', '96M');
@@ -41,7 +46,7 @@ class ThumbnailManager
         $verticalScale = Config::thumbnailMaxHeight * 1.0 / $height;
         $scale = ($horizontalScale <= $verticalScale ? $horizontalScale : $verticalScale);
 
-        $scale = max($scale, 1.0); //Only scale down
+        $scale = min($scale, 1.0); //Only scale down
         $newWidth = $width * $scale;
         $newHeight = $height * $scale;
 
@@ -67,8 +72,7 @@ class ThumbnailManager
             imagecopyresized($thumbImage, $srcImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
         }
 
-        // @todo that is also bullshit, same as above!
-        //imagejpeg($thumbImage, $fileManager->concatPaths($fileManager->getAbsoluteThumbnailDir(), $pathToImage), Config::$thumbnailJPEGQuality);
+        imagejpeg($thumbImage, $this->getThumbnailPathForImage($image), Config::thumbnailJPEGQuality);
 
         imagedestroy($thumbImage);
         imagedestroy($srcImage);
