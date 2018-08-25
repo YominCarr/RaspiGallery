@@ -10,8 +10,10 @@ Hello RaspiGallery!<br/><br/>
 
 require_once 'src/Config.php';
 require_once 'src/FileManager.php';
+require_once 'frontend/Gallery.php';
 
 $fileManager = new FileManager();
 
-echo "Photo dir (" . $fileManager->getAbsolutePhotoDir() . "):<br/>";
-print_r($fileManager->scanDirRecursively($fileManager->getAbsolutePhotoDir()));
+$content = $fileManager->scanDirRecursively($fileManager->getAbsolutePhotoDir());
+
+echo printContent($content);

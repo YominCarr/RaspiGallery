@@ -30,7 +30,7 @@ class Folder
         return $this->fullPath;
     }
 
-    public function getContent(): string
+    public function getContent(): array
     {
         return $this->content;
     }
