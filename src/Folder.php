@@ -6,8 +6,8 @@
  * Time: 18:19
  */
 
-require_once 'FileSystemEntity.php';
-require_once 'Image.php';
+require_once __DIR__.'/FileSystemEntity.php';
+require_once __DIR__.'/Image.php';
 
 class Folder extends FileSystemEntity
 {
@@ -29,7 +29,7 @@ class Folder extends FileSystemEntity
     {
         $s = sizeof($this->content["images"]);
         if ($s > 0) {
-            $r = rand(1, $s);
+            $r = rand(0, $s-1);
             return $this->content["images"][$r];
         } else {
             return Image::getDummyImage($fileManager);

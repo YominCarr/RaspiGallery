@@ -6,9 +6,9 @@
  * Time: 16:44
  */
 
-require_once 'Config.php';
-require_once 'Folder.php';
-require_once 'Image.php';
+require_once __DIR__.'/Config.php';
+require_once __DIR__.'/Folder.php';
+require_once __DIR__.'/Image.php';
 
 class FileManager
 {
@@ -81,6 +81,19 @@ class FileManager
     {
         $path = str_replace($this->pathToDir($_SERVER['DOCUMENT_ROOT']), "", $path);
         return $path;
+    }
+
+    public function createFoldersOfPath(string $path)
+    {
+        if(file_exists($path) && is_dir($path)) {
+            return;
+        }
+        mkdir($path, 0744, true);
+    }
+
+    public function removeFileFromPath(string $path): string
+    {
+        return dirname($path);
     }
 
 }

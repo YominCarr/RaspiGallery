@@ -6,15 +6,15 @@
  * Time: 16:43
  */
 
-require_once 'FileManager.php';
+require_once __DIR__.'/FileManager.php';
 
 class ThumbnailManager
 {
 
-    public function generateThumbnailIfNeeded(Image $image): Image
+    public function generateThumbnailIfNeeded(FileManager $fileManager, Image $image): Image
     {
         if (!$this->thumbnailExists($image)) {
-            return $this->createThumbnail($image);
+            return $this->createThumbnail($fileManager, $image);
         }
 
         $thumbnailPath = $this->getThumbnailPathForImage($image);
@@ -35,7 +35,7 @@ class ThumbnailManager
         return file_exists($this->getThumbnailPathForImage($image));
     }
 
-    private function createThumbnail(Image $image): Image
+    private function createThumbnail(FileManager $fileManager, Image $image): Image
     {
         // @todo do we need that?
         //ini_set('memory_limit', '96M');
@@ -77,6 +77,7 @@ class ThumbnailManager
         }
 
         $thumbnailPath = $this->getThumbnailPathForImage($image);
+        $fileManager->createFoldersOfPath($fileManager->removeFileFromPath($thumbnailPath));
         imagejpeg($thumbImage, $thumbnailPath, Config::thumbnailJPEGQuality);
 
         imagedestroy($thumbImage);

@@ -6,7 +6,7 @@
  * Time: 21:36
  */
 
-require_once 'FileManager.php';
+require_once __DIR__.'/FileManager.php';
 
 class FileSystemEntity
 {

@@ -6,7 +6,7 @@
  * Time: 18:25
  */
 
-require_once 'FileSystemEntity.php';
+require_once __DIR__.'/FileSystemEntity.php';
 
 class Image extends FileSystemEntity
 {
