@@ -21,5 +21,6 @@ echo printContent($content);
 
 $thumbnailManager = new ThumbnailManager();
 foreach ($content["images"] as $i) {
-    echo ($thumbnailManager->generateThumbnailIfNeeded($i) ? "Thumbnails created" : "Error encountered in thumbnail generation");
+    $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($i);
+    print_r($thumbnail);
 }

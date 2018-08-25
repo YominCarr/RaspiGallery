@@ -11,12 +11,17 @@ require_once 'FileManager.php';
 class ThumbnailManager
 {
 
-    public function generateThumbnailIfNeeded(Image $image): bool
+    public function generateThumbnailIfNeeded(Image $image): Image
     {
         if (!$this->thumbnailExists($image)) {
             return $this->createThumbnail($image);
         }
-        return true;
+
+        $thumbnailPath = $this->getThumbnailPathForImage($image);
+        list($width, $height, $type, $attr) = getimagesize($thumbnailPath, $info);
+        $creationDate = filectime($thumbnailPath);
+        $thumbnail = new Image($image->getName(), $thumbnailPath, $type, $width, $height, $creationDate);
+        return $thumbnail;
     }
 
     private function getThumbnailPathForImage(Image $image): string
@@ -31,7 +36,7 @@ class ThumbnailManager
         return file_exists($this->getThumbnailPathForImage($image));
     }
 
-    private function createThumbnail(Image $image): bool
+    private function createThumbnail(Image $image): Image
     {
         // @todo do we need that?
         //ini_set('memory_limit', '96M');
@@ -56,8 +61,9 @@ class ThumbnailManager
         } else if ($type == IMAGETYPE_PNG) {
             $srcImage = imagecreatefrompng($pathToImage);
         }
-        // @todo rather throw exception?
-        if (!$srcImage) return false;
+        if (!$srcImage) {
+            throw new \Exception('Could not read image file: ' . $pathToImage);
+        }
 
         $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
         if ($type == IMAGETYPE_GIF || $type == IMAGETYPE_PNG) {
@@ -71,10 +77,13 @@ class ThumbnailManager
             imagecopyresized($thumbImage, $srcImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
         }
 
-        imagejpeg($thumbImage, $this->getThumbnailPathForImage($image), Config::thumbnailJPEGQuality);
+        $thumbnailPath = $this->getThumbnailPathForImage($image);
+        imagejpeg($thumbImage, $thumbnailPath, Config::thumbnailJPEGQuality);
 
         imagedestroy($thumbImage);
         imagedestroy($srcImage);
-        return true;
+
+        $thumbnail = new Image($image->getName(), $thumbnailPath, $type, $newWidth, $newHeight, time());
+        return $thumbnail;
     }
 }
