@@ -10,6 +10,7 @@ Hello RaspiGallery!<br/><br/>
 
 require_once 'src/Config.php';
 require_once 'src/FileManager.php';
+require_once 'src/ThumbnailManager.php';
 require_once 'frontend/Gallery.php';
 
 $fileManager = new FileManager();
@@ -17,3 +18,8 @@ $fileManager = new FileManager();
 $content = $fileManager->scanDirRecursively($fileManager->getAbsolutePhotoDir());
 
 echo printContent($content);
+
+$thumbnailManager = new ThumbnailManager();
+foreach ($content["images"] as $i) {
+    $thumbnailManager->generateThumbnailIfNeeded($fileManager, $i);
+}

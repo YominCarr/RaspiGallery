@@ -37,7 +37,7 @@ class FileManager
                     $creationDate = filectime($contentPath);
 
                     // @todo Check directly for thumbnails
-                    array_push($images, new Image($value, $contentPath, $width, $height, $creationDate));
+                    array_push($images, new Image($value, $contentPath, $type, $width, $height, $creationDate));
                 }
             }
         }
@@ -70,6 +70,13 @@ class FileManager
     {
         $path = $this->concatPaths($this->pathToDir($_SERVER['DOCUMENT_ROOT']), Config::documentRoot);
         $path = $this->concatPaths($path, Config::photoDir);
+        return $path;
+    }
+
+    public function getAbsoluteThumbnailDir(): string
+    {
+        $path = $this->concatPaths($this->pathToDir($_SERVER['DOCUMENT_ROOT']), Config::documentRoot);
+        $path = $this->concatPaths($path, Config::thumbnailDir);
         return $path;
     }
 
