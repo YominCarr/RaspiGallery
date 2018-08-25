@@ -11,7 +11,6 @@ require_once 'FileManager.php';
 class ThumbnailManager
 {
 
-    // @todo will probably be private soon
     public function generateThumbnailIfNeeded(Image $image): bool
     {
         if (!$this->thumbnailExists($image)) {
@@ -78,35 +77,4 @@ class ThumbnailManager
         imagedestroy($srcImage);
         return true;
     }
-
-    // Old stuff:
-    /*
-        public static function getAvailableThumbnails($relativePathToImage)
-        {
-            $absolutePathToImage = $fileManager->concatPaths($fileManager->getAbsoluteImageFolderPath(), $relativePathToImage);
-            $availableThumbnails = array();
-            foreach (Properties::$thumbnailSizes as $size) {
-                $exist = $this->isThumbnailExist($absolutePathToImage, $size);
-                $availableThumbnails[] = new ThumbnailInfo($size, $exist);
-            }
-            return $availableThumbnails;
-        }
-
-        public static function requestThumbnail($pathToImage, $size)
-        {
-            $pathToImage = $fileManager->concatPaths($fileManager->getAbsoluteImageFolderPath(), $pathToImage);
-
-            if (!$this->isThumbnailExist($pathToImage, $size)) {
-                $this->createThumbnail($pathToImage, $size);
-            }
-            $fileName = $this->getThumbnailFileName($pathToImage, $size);
-            $thumbnailPath = $fileManager->concatPaths($fileManager->getAbsoluteThumbnailFolderPath(), $fileName . ".jpg");
-
-            $image = file_get_contents($thumbnailPath);
-            if ($image !== false) { //touching files -> means it was used
-                touch($thumbnailPath);
-            }
-            return array("image" => $image, "filesSze" => filesize($thumbnailPath));
-        }
-    */
 }
