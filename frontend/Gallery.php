@@ -9,6 +9,8 @@
 require_once __DIR__ . '/../src/FileManager.php';
 require_once __DIR__ . '/../src/ThumbnailManager.php';
 
+// @todo Need proper layout
+// @todo Add links to images / folders
 function getGalleryHTML(FileManager $fileManager, ThumbnailManager $thumbnailManager, array $content): string
 {
     $str = "";
@@ -21,13 +23,13 @@ function getGalleryHTML(FileManager $fileManager, ThumbnailManager $thumbnailMan
             } else {
                 $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($fileManager, $image);
             }
-            $str .= $thumbnail->getDisplayHTML($fileManager) . "<br>";
+            $str .= $thumbnail->getDisplayHTML($fileManager) . " (Folder)<br>";
         }
     }
 
     foreach ($content["images"] as $image) {
         $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($fileManager, $image);
-        $str .= $thumbnail->getDisplayHTML($fileManager) . "<br>";
+        $str .= $thumbnail->getDisplayHTML($fileManager) . " (Image)<br>";
     }
 
     return $str;
