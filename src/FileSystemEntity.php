@@ -6,7 +6,7 @@
  * Time: 21:36
  */
 
-require_once __DIR__.'/FileManager.php';
+require_once __DIR__ . '/FileManager.php';
 
 class FileSystemEntity
 {
@@ -32,5 +32,13 @@ class FileSystemEntity
     public function getRelativePath(FileManager $fileManager): string
     {
         return $fileManager->absoluteToRelativePath($this->getFullPath());
+    }
+
+    public function getRelativePathToPhotoDir(FileManager $fileManager): string
+    {
+        $relativePath = $this->getRelativePath($fileManager);
+        $relativePath = str_replace($fileManager->concatPaths(Config::documentRoot, Config::photoDir), '', $relativePath);
+        $relativePath = $fileManager->cleanExtraSeparatorsFromPath($relativePath);
+        return $relativePath;
     }
 }

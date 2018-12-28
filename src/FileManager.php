@@ -6,9 +6,9 @@
  * Time: 16:44
  */
 
-require_once __DIR__.'/Config.php';
-require_once __DIR__.'/Folder.php';
-require_once __DIR__.'/Image.php';
+require_once __DIR__ . '/Config.php';
+require_once __DIR__ . '/Folder.php';
+require_once __DIR__ . '/Image.php';
 
 class FileManager
 {
@@ -85,7 +85,7 @@ class FileManager
 
     public function createFoldersOfPath(string $path)
     {
-        if(file_exists($path) && is_dir($path)) {
+        if (file_exists($path) && is_dir($path)) {
             return;
         }
         mkdir($path, 0744, true);
@@ -94,6 +94,18 @@ class FileManager
     public function removeFileFromPath(string $path): string
     {
         return dirname($path);
+    }
+
+    public function cleanExtraSeparatorsFromPath(string $path): string
+    {
+        $newPath = ltrim($path, DIRECTORY_SEPARATOR);
+        $newPath = preg_replace('#' . DIRECTORY_SEPARATOR . '+#', DIRECTORY_SEPARATOR, $newPath);
+        return $newPath;
+    }
+
+    public function trimTrailingDirSeparator(string $path): string
+    {
+        return rtrim($path, DIRECTORY_SEPARATOR);
     }
 
 }

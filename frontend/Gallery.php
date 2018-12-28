@@ -54,11 +54,19 @@ class Gallery
                 } else {
                     $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
                 }
-                $thumbnailHTMLs[] = $thumbnail->getDisplayHTML($this->fileManager);
+
+                $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager);
+                $thumbnailPath = $this->fileManager->trimTrailingDirSeparator($folder->getRelativePathToPhotoDir($this->fileManager));
+                $thumbnailHTMLs[] = $this->createFolderLinkAroundImage($thumbnailPath, $thumbnailHTML);
             }
         }
 
         return $this->getGalleryHTML($thumbnailHTMLs);
+    }
+
+    // @todo replace hardcoded index.php by "current page"
+    private function createFolderLinkAroundImage($imagePath, $imageHTML) {
+        return "<a href='index.php?path=$imagePath'>" . $imageHTML . "</a>";
     }
 
     private function getImageGalleryHTML(array $images)
