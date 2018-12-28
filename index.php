@@ -23,10 +23,6 @@ if (! empty($subDir)) {
 }
 $content = $fileManager->scanDirRecursively($dir);
 
-/*echo printContent($content);
-
-echo "<br><br>";*/
-
 $thumbnailManager = new ThumbnailManager();
 $gallery = new Gallery($fileManager, $thumbnailManager);
 echo $gallery->getFoldersAndImagesGalleryHTML($content);

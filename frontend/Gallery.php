@@ -64,7 +64,8 @@ class Gallery
         return $this->getGalleryHTML($thumbnailHTMLs);
     }
 
-    private function createFolderLinkAroundImage($imagePath, $imageHTML) {
+    private function createFolderLinkAroundImage($imagePath, $imageHTML)
+    {
         return "<a href='" . $_SERVER['REQUEST_URI'] . "?path=$imagePath'>" . $imageHTML . "</a>";
     }
 
@@ -96,37 +97,23 @@ class Gallery
             }
         }
 
+        while ($i % Config::numberImagesPerRow != 0) {
+            $str .= "<div class='thumbnailColumn'>";
+            $str .= $this->getEmptyThumbnailHTML();
+            $str .= "</div>";
+
+            ++$i;
+        }
+
         $str .= "</div></div>";
         return $str;
     }
 
-// @todo these will become obsolete soon
-    public function printContent(array $content): string
+    private function getEmptyThumbnailHTML()
     {
-        $ret = "<ul>";
-        $ret .= $this->printFolders($content["folders"]);
-        $ret .= $this->printImages($content["images"]);
-        $ret .= "</ul>";
-        return $ret;
-    }
-
-    private function printFolders(array $folders): string
-    {
-        $ret = "";
-        foreach ($folders as $f) {
-            $ret .= "<li>" . $f->getName() . "<ul>";
-            $ret .= printContent($f->getContent());
-            $ret .= "</ul></li>";
-        }
-        return $ret;
-    }
-
-    private function printImages(array $images): string
-    {
-        $ret = "";
-        foreach ($images as $i) {
-            $ret .= "<li>" . $i->getName() . "</li>";
-        }
-        return $ret;
+        // @todo use these to inject css
+        $width = CONFIG::thumbnailMaxWidth;
+        $height = CONFIG::thumbnailMaxHeight;
+        return "<div class='emptyDummyImage'></div>";
     }
 }
