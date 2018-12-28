@@ -27,11 +27,24 @@ function getGalleryHTML(FileManager $fileManager, ThumbnailManager $thumbnailMan
         }
     }
 
-    foreach ($content["images"] as $image) {
+    $str .= getImageRowHTML($fileManager, $thumbnailManager, $content["images"]);
+
+    return $str;
+}
+
+function getImageRowHTML(FileManager $fileManager, ThumbnailManager $thumbnailManager, array $images) {
+    $str = "<div class='thumbnailRow'>";
+
+    foreach ($images as $image) {
+        $str .= "<div class='thumbnailColumn'>";
+
         $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($fileManager, $image);
-        $str .= $thumbnail->getDisplayHTML($fileManager) . " (Image)<br>";
+        $str .= $thumbnail->getDisplayHTML($fileManager); //<img src="img1.jpg" onclick="openModal();currentSlide(1)" class="hover-shadow">
+
+        $str .= "</div>";
     }
 
+    $str .= "</div>";
     return $str;
 }
 

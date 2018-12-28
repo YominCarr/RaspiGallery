@@ -1,12 +1,10 @@
-Hello RaspiGallery!<br/><br/>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/Gallery.css" />
+</head>
+<body>
 
 <?php
-/**
- * Created by PhpStorm.
- * User: Alex
- * Date: 25.08.2018
- * Time: 16:38
- */
 
 require_once __DIR__.'/src/Config.php';
 require_once __DIR__.'/src/FileManager.php';
@@ -23,3 +21,8 @@ echo "<br><br>";
 
 $thumbnailManager = new ThumbnailManager();
 echo getGalleryHTML($fileManager, $thumbnailManager, $content);
+
+?>
+
+</body>
+</html>

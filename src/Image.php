@@ -46,7 +46,7 @@ class Image extends FileSystemEntity
 
         $alt = $this->getName();
 
-        $str = "<img src=\"$src\" alt=\"$alt\">";
+        $str = "<img src='$src' alt='$alt' class='hover-shadow'>";
         return $str;
     }
 
