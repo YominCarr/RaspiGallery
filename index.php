@@ -12,6 +12,8 @@ require_once __DIR__.'/src/FileManager.php';
 require_once __DIR__.'/src/ThumbnailManager.php';
 require_once __DIR__.'/frontend/Gallery.php';
 
+echo "<br/><br/><h3><a href='" . $_SERVER['PHP_SELF'] . "'>Home</a></h3>";
+
 $fileManager = new FileManager();
 
 $subDir = filter_input(INPUT_GET, 'path', FILTER_SANITIZE_STRING);

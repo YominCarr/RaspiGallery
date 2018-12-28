@@ -64,9 +64,8 @@ class Gallery
         return $this->getGalleryHTML($thumbnailHTMLs);
     }
 
-    // @todo replace hardcoded index.php by "current page"
     private function createFolderLinkAroundImage($imagePath, $imageHTML) {
-        return "<a href='index.php?path=$imagePath'>" . $imageHTML . "</a>";
+        return "<a href='" . $_SERVER['REQUEST_URI'] . "?path=$imagePath'>" . $imageHTML . "</a>";
     }
 
     private function getImageGalleryHTML(array $images)
