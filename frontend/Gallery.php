@@ -156,7 +156,7 @@ class Gallery
         $i = 1;
         foreach ($images as $image) {
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
-            $str .= "<div class=\"column\" onclick='currentSlide($i)'>";
+            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
             $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo");
             $str .= "</div>";
 
