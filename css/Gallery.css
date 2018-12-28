@@ -27,8 +27,6 @@ h1 {
 
 .thumbnailColumn {
     float: left;
-    min-width: 23%;
-    max-width: 23%;
 }
 
 .thumbnailColumn img {
