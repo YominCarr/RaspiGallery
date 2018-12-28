@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alex
- * Date: 25.08.2018
- * Time: 16:49
- */
 
 class Config
 {
@@ -12,9 +6,12 @@ class Config
     const photoDir = "sampleData";
     const thumbnailDir = "thumbnails";
 
+    // Width must match that of .thumbnailColumn in css/Gallery.css
     const thumbnailMaxWidth = 300;
     const thumbnailMaxHeight = 200;
 
     const thumbnailResampleInsteadResize = true; // Better quality
     const thumbnailJPEGQuality = 75;
+
+    const numberImagesPerRow = 4;
 }

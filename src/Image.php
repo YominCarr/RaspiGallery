@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alex
- * Date: 25.08.2018
- * Time: 18:25
- */
 
 require_once __DIR__.'/FileSystemEntity.php';
 

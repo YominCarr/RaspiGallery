@@ -1,5 +1,21 @@
+h1 {
+    text-align: center;
+}
+
+.galleryWrapper {
+    text-align: center;
+}
+
+.gallery {
+    display: inline-block;
+}
+
+.thumbnailRow {
+    display: block;
+}
+
 .thumbnailRow > .thumbnailColumn {
-    padding: 0 8px;
+    padding: 8px 8px;
 }
 
 .thumbnailRow:after {

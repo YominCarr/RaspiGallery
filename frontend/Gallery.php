@@ -1,50 +1,71 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alex
- * Date: 25.08.2018
- * Time: 19:18
- */
 
 require_once __DIR__ . '/../src/FileManager.php';
 require_once __DIR__ . '/../src/ThumbnailManager.php';
+require_once __DIR__.'/../src/Config.php';
 
-// @todo Need proper layout
 // @todo Add links to images / folders
-function getGalleryHTML(FileManager $fileManager, ThumbnailManager $thumbnailManager, array $content): string
+function getFoldersAndImagesGalleryHTML(FileManager $fileManager, ThumbnailManager $thumbnailManager, array $content): string
 {
-    $str = "";
+    $str = "<div class='galleryWrapper'>";
 
-    foreach ($content["folders"] as $folder) {
+    $str .= "<h2>Folders</h2>";
+    $str .= getFolderGalleryHTML($fileManager, $thumbnailManager, $content["folders"]);
+    $str .= "<br/><br/>";
+    $str .= "<h2>Images</h2>";
+    $str .= getImageGalleryHTML($fileManager, $thumbnailManager, $content["images"]);
+
+    $str .= "</div>";
+
+    return $str;
+}
+
+function getFolderGalleryHTML(FileManager $fileManager, ThumbnailManager $thumbnailManager, array $folders) {
+    $thumbnailHTMLs = [];
+
+    foreach ($folders as $folder) {
         $image = $folder->getRandomImage($fileManager);
+        // @todo else ?
         if ($image != NULL) {
             if (strpos($image->getFullPath(), "img/dummy.png") !== false) {
                 $thumbnail = $image;
             } else {
                 $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($fileManager, $image);
             }
-            $str .= $thumbnail->getDisplayHTML($fileManager) . " (Folder)<br>";
+            $thumbnailHTMLs[] = $thumbnail->getDisplayHTML($fileManager);
         }
     }
 
-    $str .= getImageRowHTML($fileManager, $thumbnailManager, $content["images"]);
-
-    return $str;
+    return getGalleryHTML($thumbnailHTMLs);
 }
 
-function getImageRowHTML(FileManager $fileManager, ThumbnailManager $thumbnailManager, array $images) {
-    $str = "<div class='thumbnailRow'>";
+function getImageGalleryHTML(FileManager $fileManager, ThumbnailManager $thumbnailManager, array $images) {
+    $thumbnailHTMLs = [];
 
     foreach ($images as $image) {
-        $str .= "<div class='thumbnailColumn'>";
-
         $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($fileManager, $image);
-        $str .= $thumbnail->getDisplayHTML($fileManager); //<img src="img1.jpg" onclick="openModal();currentSlide(1)" class="hover-shadow">
-
-        $str .= "</div>";
+        $thumbnailHTMLs[] = $thumbnail->getDisplayHTML($fileManager); //<img src="img1.jpg" onclick="openModal();currentSlide(1)" class="hover-shadow">
     }
 
-    $str .= "</div>";
+    return getGalleryHTML($thumbnailHTMLs);
+}
+
+function getGalleryHTML(array $thumbnailHTMLs) {
+    $str = "<div class='gallery'><div class='thumbnailRow'>";
+
+    $i = 0;
+    foreach ($thumbnailHTMLs as $thumbnailHTML) {
+        $str .= "<div class='thumbnailColumn'>";
+        $str .= $thumbnailHTML;
+        $str .= "</div>";
+
+        ++ $i;
+        if ($i % Config::numberImagesPerRow == 0) {
+            $str .= "</div><div class='thumbnailRow'>";
+        }
+    }
+
+    $str .= "</div></div>";
     return $str;
 }
 
