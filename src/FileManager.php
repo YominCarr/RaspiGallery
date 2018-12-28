@@ -80,6 +80,9 @@ class FileManager
     public function absoluteToRelativePath(string $path): string
     {
         $path = str_replace($this->pathToDir($_SERVER['DOCUMENT_ROOT']), "", $path);
+        if (substr( $path, 0, 1 ) !== DIRECTORY_SEPARATOR) {
+            $path = DIRECTORY_SEPARATOR . $path;
+        }
         return $path;
     }
 
