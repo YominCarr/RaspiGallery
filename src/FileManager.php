@@ -12,6 +12,7 @@ require_once __DIR__ . '/Image.php';
 
 class FileManager
 {
+    // @todo give options for sorting
     public function scanDirRecursively(string $path): array
     {
         if (!is_dir($path)) {
