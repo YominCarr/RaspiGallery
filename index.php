@@ -14,14 +14,20 @@ require_once __DIR__.'/frontend/Gallery.php';
 
 $fileManager = new FileManager();
 
-$content = $fileManager->scanDirRecursively($fileManager->getAbsolutePhotoDir());
+$subDir = filter_input(INPUT_GET, 'path', FILTER_SANITIZE_STRING);
+$dir = $fileManager->getAbsolutePhotoDir();
+if (! empty($subDir)) {
+    $dir = $fileManager->concatPaths($dir, $subDir);
+}
+$content = $fileManager->scanDirRecursively($dir);
 
 /*echo printContent($content);
 
 echo "<br><br>";*/
 
 $thumbnailManager = new ThumbnailManager();
-echo getFoldersAndImagesGalleryHTML($fileManager, $thumbnailManager, $content);
+$gallery = new Gallery($fileManager, $thumbnailManager);
+echo $gallery->getFoldersAndImagesGalleryHTML($content);
 
 ?>
 
