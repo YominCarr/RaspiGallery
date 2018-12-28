@@ -34,6 +34,9 @@ class Gallery
         if (sizeof($images) > 0) {
             $str .= "<h2>Images</h2>";
             $str .= $this->getImageGalleryHTML($images);
+
+            $str .= "<script type='text/javascript' src='js/Slideshow.js'></script>";
+            $str .= $this->getSlideshowOverlay($images);
         }
 
         $str .= "</div>";
@@ -55,9 +58,9 @@ class Gallery
                     $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
                 }
 
-                $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager);
-                $thumbnailPath = $this->fileManager->trimTrailingDirSeparator($folder->getRelativePathToPhotoDir($this->fileManager));
-                $thumbnailHTMLs[] = $this->createFolderLinkAroundImage($thumbnailPath, $thumbnailHTML);
+                $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
+                $folderPath = $this->fileManager->trimTrailingDirSeparator($folder->getRelativePathToPhotoDir($this->fileManager));
+                $thumbnailHTMLs[] = $this->createFolderLinkAroundImage($folderPath, $thumbnailHTML);
             }
         }
 
@@ -75,10 +78,15 @@ class Gallery
 
         foreach ($images as $image) {
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
-            $thumbnailHTMLs[] = $thumbnail->getDisplayHTML($this->fileManager); //<img src="img1.jpg" onclick="openModal();currentSlide(1)" class="hover-shadow">
+            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
+            $thumbnailHTMLs[] = $this->createSlideshowLinkAroundImage($thumbnailHTML);
         }
 
         return $this->getGalleryHTML($thumbnailHTMLs);
+    }
+
+    private function createSlideshowLinkAroundImage($imageHTML) {
+        return "<a onclick='openModal();currentSlide(1)'>" . $imageHTML . "</a>";
     }
 
     private function getGalleryHTML(array $thumbnailHTMLs)
@@ -111,9 +119,51 @@ class Gallery
 
     private function getEmptyThumbnailHTML()
     {
-        // @todo use these to inject css
-        $width = CONFIG::thumbnailMaxWidth;
-        $height = CONFIG::thumbnailMaxHeight;
         return "<div class='emptyDummyImage'></div>";
+    }
+
+    // @todo refactor
+    // @todo only show a few images!
+    private function getSlideshowOverlay($images)
+    {
+        $countImages = sizeof($images);
+
+        $str = "<div id=\"myModal\" class=\"modal\">";
+        $str .= "<span class=\"close cursor\" onclick=\"closeModal()\">&times;</span>";
+        $str .= "<div class=\"modal-content\">";
+
+        // Full sized images
+        $i = 1;
+        foreach ($images as $image) {
+            $str .= "<div class=\"mySlides\">";
+            $str .= "<div class=\"numbertext\">$i / $countImages</div>";
+            $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage");
+            $str .= "</div>";
+
+            ++$i;
+        }
+
+        // Controls
+        $str .= "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>";
+        $str .= "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>";
+
+        // Caption @todo add exif caption stuff
+        $str .= "<div class=\"caption-container\">";
+        $str .= "<p id=\"caption\"></p>";
+        $str .= "</div>";
+
+        // Thumbnails
+        $i = 1;
+        foreach ($images as $image) {
+            $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
+            $str .= "<div class=\"column\" onclick='currentSlide($i)'>";
+            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo");
+            $str .= "</div>";
+
+            ++$i;
+        }
+
+        $str .= "</div></div>";
+        return $str;
     }
 }

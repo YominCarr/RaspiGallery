@@ -33,14 +33,14 @@ class Image extends FileSystemEntity
         return $this->height;
     }
 
-    public function getDisplayHTML(FileManager $fileManager): string
+    public function getDisplayHTML(FileManager $fileManager, string $classes): string
     {
         $src = $this->getRelativePath($fileManager);
         $src = $fileManager->pathToUrl($src);
 
         $alt = $this->getName();
 
-        $str = "<img src='$src' alt='$alt' class='hover-shadow'>";
+        $str = "<img src='$src' alt='$alt' class='$classes'>";
         return $str;
     }
 
