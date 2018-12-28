@@ -6,8 +6,6 @@ class Config
     const photoDir = "sampleData";
     const thumbnailDir = "thumbnails";
 
-    // Width must relate to settings in css/Gallery.css
-    // @todo make that adjust automatically
     const thumbnailMaxWidth = 300;
     const thumbnailMaxHeight = 200;
 
