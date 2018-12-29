@@ -76,17 +76,20 @@ class Gallery
     {
         $thumbnailHTMLs = [];
 
+        $i = 1;
         foreach ($images as $image) {
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
-            $thumbnailHTMLs[] = $this->createSlideshowLinkAroundImage($thumbnailHTML);
+            $thumbnailHTMLs[] = $this->createSlideshowLinkAroundImage($thumbnailHTML, $i);
+            ++ $i;
         }
 
         return $this->getGalleryHTML($thumbnailHTMLs);
     }
 
-    private function createSlideshowLinkAroundImage($imageHTML) {
-        return "<a onclick='openModal();currentSlide(1)'>" . $imageHTML . "</a>";
+    private function createSlideshowLinkAroundImage($imageHTML, $i)
+    {
+        return "<a onclick='openModal();currentSlide($i)'>" . $imageHTML . "</a>";
     }
 
     private function getGalleryHTML(array $thumbnailHTMLs)
@@ -135,6 +138,7 @@ class Gallery
         // Full sized images
         $i = 1;
         foreach ($images as $image) {
+
             $str .= "<div class=\"mySlides\">";
             $str .= "<div class=\"numbertext\">$i / $countImages</div>";
             $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage");
@@ -147,9 +151,16 @@ class Gallery
         $str .= "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>";
         $str .= "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>";
 
-        // Caption @todo add exif caption stuff
+        // Caption
         $str .= "<div class=\"caption-container\">";
-        $str .= "<p id=\"caption\"></p>";
+        $i = 1;
+        foreach ($images as $image) {
+            $str .= "<p id=\"caption$i\" class='caption'>";
+            $str .= $this->getSlideshowCaption($image);
+            $str .= "</p>";
+
+            ++$i;
+        }
         $str .= "</div>";
 
         // Thumbnails
@@ -165,5 +176,25 @@ class Gallery
 
         $str .= "</div></div>";
         return $str;
+    }
+
+    private function getSlideshowCaption(Image $image): string
+    {
+        $exifData = $image->getExifData();
+        $exifDataArray = ["Name" => $image->getName(),
+            "Camera Modell" => $exifData->camera,
+            "Sensitivity" => $exifData->iso,
+            "Shutter Speed" => $exifData->shutter,
+            "Aperture" => $exifData->aperture,
+            "Focal Length" => $exifData->focal,
+            "Date Taken" => $exifData->dateTaken];
+
+        $exifString = "<table class='captionTable'>";
+        foreach ($exifDataArray as $key => $val) {
+            $exifString .= "<tr><td>" . $key . "</td><td>" . $val . "</td></tr>";
+        }
+        $exifString .= "</table>";
+
+        return $exifString;
     }
 }

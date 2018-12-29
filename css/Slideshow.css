@@ -100,6 +100,16 @@
     color: white;
 }
 
+.caption {
+    display: none;
+}
+
+.captionTable {
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+}
+
 img.demo {
     opacity: 0.6;
 }

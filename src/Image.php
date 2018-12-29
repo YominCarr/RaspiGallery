@@ -1,17 +1,21 @@
 <?php
 
 require_once __DIR__ . '/FileSystemEntity.php';
+require_once __DIR__ . '/ExifReader.php';
 
 class Image extends FileSystemEntity
 {
+    static public $exifReader;
+
     private $type;
     private $width;
     private $height;
     private $creationDate;
     private $modificationDate;
+    private $exifData;
 
     public function __construct(string $name, string $fullPath, int $type, string $width, string $height,
-                                string $creationDate, string $modificationDate)
+                                string $creationDate, string $modificationDate, ExifData $exifData)
     {
         parent::__construct($name, $fullPath);
         $this->type = $type;
@@ -19,6 +23,7 @@ class Image extends FileSystemEntity
         $this->height = $height;
         $this->creationDate = $creationDate;
         $this->modificationDate = $modificationDate;
+        $this->exifData = $exifData;
     }
 
     public function getType(): int
@@ -46,12 +51,19 @@ class Image extends FileSystemEntity
         return $this->modificationDate;
     }
 
-    public function getDisplayHTML(FileManager $fileManager, string $classes): string
+    public function getExifData(): ExifData
+    {
+        return $this->exifData;
+    }
+
+    public function getDisplayHTML(FileManager $fileManager, string $classes, string $alt = ""): string
     {
         $src = $this->getRelativePath($fileManager);
         $src = $fileManager->pathToUrl($src);
 
-        $alt = $this->getName();
+        if (empty($alt)) {
+            $alt = $this->getName();
+        }
 
         $str = "<img src='$src' alt='$alt' class='$classes'>";
         return $str;
@@ -65,8 +77,9 @@ class Image extends FileSystemEntity
         }
         $creationDate = filectime($filePath);
         $modificationDate = filemtime($filePath);
+        $exif = Image::$exifReader->readExifDataFromImage($filePath);
 
-        return new Image($name, $filePath, $type, $width, $height, $creationDate, $modificationDate);
+        return new Image($name, $filePath, $type, $width, $height, $creationDate, $modificationDate, $exif);
     }
 
     public static function getDummyImage(FileManager $fileManager): Image
@@ -76,3 +89,6 @@ class Image extends FileSystemEntity
         return self::createImage($name, $filePath);
     }
 }
+
+// @todo how to make that private?
+Image::$exifReader = new ExifReader();
