@@ -13,4 +13,8 @@ class Config
     const thumbnailJPEGQuality = 75;
 
     const numberImagesPerRow = 4;
+
+    // @todo actually use something like this
+    // [['folder' => '', 'password' => ''], [...], ...]
+    const protectedFolders = [];
 }
