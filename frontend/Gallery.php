@@ -36,7 +36,7 @@ class Gallery
             $str .= $this->getImageGalleryHTML($images);
 
             $str .= "<script type='text/javascript' src='js/Slideshow.js'></script>";
-            $str .= $this->getSlideshowOverlay($images);
+            $str .= $this->getSlideshowOverlayHTML($images);
         }
 
         $str .= "</div>";
@@ -81,7 +81,7 @@ class Gallery
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
             $thumbnailHTMLs[] = $this->createSlideshowLinkAroundImage($thumbnailHTML, $i);
-            ++ $i;
+            ++$i;
         }
 
         return $this->getGalleryHTML($thumbnailHTMLs);
@@ -125,17 +125,27 @@ class Gallery
         return "<div class='emptyDummyImage'></div>";
     }
 
-    // @todo refactor
     // @todo only show a few images!
-    private function getSlideshowOverlay($images)
+    private function getSlideshowOverlayHTML($images)
     {
-        $countImages = sizeof($images);
-
         $str = "<div id=\"myModal\" class=\"modal\">";
         $str .= "<span class=\"close cursor\" onclick=\"closeModal()\">&times;</span>";
         $str .= "<div class=\"modal-content\">";
 
-        // Full sized images
+        $str .= $this->getSlideshowFullImagesHTML($images);
+        $str .= $this->getSlideshowControlsHTML();
+        $str .= $this->getSlideshowCaptionHTML($images);
+        $str .= $this->getThumbnailsForSlideShowHTML($images);
+
+        $str .= "</div></div>";
+        return $str;
+    }
+
+    private function getSlideshowFullImagesHTML(array $images): string
+    {
+        $str = "";
+        $countImages = sizeof($images);
+
         $i = 1;
         foreach ($images as $image) {
 
@@ -146,13 +156,19 @@ class Gallery
 
             ++$i;
         }
+        return $str;
+    }
 
-        // Controls
-        $str .= "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>";
+    private function getSlideshowControlsHTML(): string
+    {
+        $str = "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>";
         $str .= "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>";
+        return $str;
+    }
 
-        // Caption
-        $str .= "<div class=\"caption-container\">";
+    private function getSlideshowCaptionHTML(array $images): string
+    {
+        $str = "<div class=\"caption-container\">";
         $i = 1;
         foreach ($images as $image) {
             $str .= "<p id=\"caption$i\" class='caption'>";
@@ -162,21 +178,6 @@ class Gallery
             ++$i;
         }
         $str .= "</div>";
-
-        // Thumbnails
-        $str .= "<div class='thumbnailRow'>";
-        $i = 1;
-        foreach ($images as $image) {
-            $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
-            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
-            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo");
-            $str .= "</div>";
-
-            ++$i;
-        }
-        $str .= "</div>";
-
-        $str .= "</div></div>";
         return $str;
     }
 
@@ -198,5 +199,21 @@ class Gallery
         $exifString .= "</table>";
 
         return $exifString;
+    }
+
+    private function getThumbnailsForSlideShowHTML(array $images): string
+    {
+        $str = "<div class='thumbnailRow'>";
+        $i = 1;
+        foreach ($images as $image) {
+            $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
+            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
+            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo");
+            $str .= "</div>";
+
+            ++$i;
+        }
+        $str .= "</div>";
+        return $str;
     }
 }
