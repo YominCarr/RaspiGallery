@@ -2,14 +2,16 @@
 
 require_once __DIR__ . '/Config.php';
 require_once __DIR__ . '/Image.php';
+require_once __DIR__ . '/FileSystemEntitySorter.php';
 
-class ImageSorter
+class ImageSorter extends FileSystemEntitySorter
 {
-    private $sorter;
 
     public function __construct()
     {
-        switch (Config::sortingKey) {
+        parent::__construct();
+
+        switch (Config::imageSortingKey) {
             case SortingMethod::fileName:
                 $this->sorter = "sortByFileName";
                 break;
@@ -24,39 +26,7 @@ class ImageSorter
                 break;
         }
 
-        switch (Config::sortingOrder) {
-            case SortingOrder::ascending:
-                $this->sorter .= "Asc";
-                break;
-            case SortingOrder::descending:
-                $this->sorter .= "Desc";
-                break;
-        }
-    }
-
-    public function sort(array &$array)
-    {
-        usort($array, array($this, $this->sorter));
-    }
-
-    public function sortAssociativeByValue(array &$array)
-    {
-        uasort($array, array($this, $this->sorter));
-    }
-
-    public function sortAssociativeByKey(array &$array)
-    {
-        uksort($array, array($this, $this->sorter));
-    }
-
-    private function sortByFileNameAsc(Image $a, Image $b)
-    {
-        return $a->getName() < $b->getName();
-    }
-
-    private function sortByFileNameDesc(Image $a, Image $b)
-    {
-        return $a->getName() > $b->getName();
+        $this->appendSortingDirectionToSorter();
     }
 
     private function sortByCreationDateAsc(Image $a, Image $b)

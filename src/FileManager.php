@@ -8,9 +8,11 @@ require_once __DIR__ . '/ImageSorter.php';
 class FileManager
 {
 
+    private $folderSorter;
     private $imageSorter;
 
     public function __construct() {
+        $this->folderSorter = new FileSystemEntitySorter();
         $this->imageSorter = new ImageSorter();
     }
 
@@ -45,6 +47,7 @@ class FileManager
 
         closedir($handle);
 
+        $this->sortFolders($folders);
         $this->sortImages($images);
 
         return array("folders" => $folders, "images" => $images);
@@ -117,6 +120,11 @@ class FileManager
     public function trimTrailingDirSeparator(string $path): string
     {
         return rtrim($path, DIRECTORY_SEPARATOR);
+    }
+
+    private function sortFolders(array &$folders)
+    {
+        $this->folderSorter->sort($folders);
     }
 
     private function sortImages(array &$images)

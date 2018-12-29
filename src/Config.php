@@ -21,13 +21,17 @@ class Config
     const thumbnailMaxWidth = 300;
     const thumbnailMaxHeight = 200;
 
-    const thumbnailResampleInsteadResize = true; // Better quality
+    // Set to true for better quality
+    const thumbnailResampleInsteadResize = true;
     const thumbnailJPEGQuality = 75;
 
     const numberImagesPerRow = 4;
 
-    const sortingKey = SortingMethod::fileName;
-    const sortingOrder = SortingOrder::descending;
+    const imageSortingKey = SortingMethod::fileName;
+    const imageSortingOrder = SortingOrder::descending;
+
+    // Folders always sort by name
+    const folderSortingOrder = SortingOrder::descending;
 
     // @todo actually use something like this
     // [['folder' => '', 'password' => ''], [...], ...]
