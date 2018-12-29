@@ -1,17 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alex
- * Date: 25.08.2018
- * Time: 16:44
- */
 
 require_once __DIR__ . '/Config.php';
 require_once __DIR__ . '/Folder.php';
 require_once __DIR__ . '/Image.php';
+require_once __DIR__ . '/ImageSorter.php';
 
 class FileManager
 {
+
+    private $imageSorter;
+
+    public function __construct() {
+        $this->imageSorter = new ImageSorter();
+    }
+
     // @todo give options for sorting
     public function scanDirRecursively(string $path): array
     {
@@ -22,6 +24,7 @@ class FileManager
         $folders = array();
         $images = array();
         $handle = opendir($path);
+
         while (false !== ($value = readdir($handle))) {
             if ($value != "." && $value != "..") {
                 $contentPath = $this->concatPaths($path, $value);
@@ -39,7 +42,11 @@ class FileManager
                 }
             }
         }
+
         closedir($handle);
+
+        $this->sortImages($images);
+
         return array("folders" => $folders, "images" => $images);
     }
 
@@ -81,7 +88,7 @@ class FileManager
     public function absoluteToRelativePath(string $path): string
     {
         $path = str_replace($this->pathToDir($_SERVER['DOCUMENT_ROOT']), "", $path);
-        if (substr( $path, 0, 1 ) !== DIRECTORY_SEPARATOR) {
+        if (substr($path, 0, 1) !== DIRECTORY_SEPARATOR) {
             $path = DIRECTORY_SEPARATOR . $path;
         }
         return $path;
@@ -110,6 +117,11 @@ class FileManager
     public function trimTrailingDirSeparator(string $path): string
     {
         return rtrim($path, DIRECTORY_SEPARATOR);
+    }
+
+    private function sortImages(array &$images)
+    {
+        $this->imageSorter->sort($images);
     }
 
 }
