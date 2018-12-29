@@ -22,7 +22,6 @@ h1 {
 .thumbnailRow:after {
     content: "";
     display: table;
-    clear: both;
 }
 
 .thumbnailColumn {

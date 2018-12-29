@@ -164,6 +164,7 @@ class Gallery
         $str .= "</div>";
 
         // Thumbnails
+        $str .= "<div class='thumbnailRow'>";
         $i = 1;
         foreach ($images as $image) {
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
@@ -173,6 +174,7 @@ class Gallery
 
             ++$i;
         }
+        $str .= "</div>";
 
         $str .= "</div></div>";
         return $str;
