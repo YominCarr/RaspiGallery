@@ -49,3 +49,7 @@ function showSlides() {
     lastCaption.style.display = "none";
     caption.style.display = "block";
 }
+
+function changeImageSource(element, src) {
+    element.src = src;
+}
