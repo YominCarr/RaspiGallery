@@ -28,13 +28,16 @@ function showSlides() {
     var slides = document.getElementsByClassName("mySlides");
     var dots = document.getElementsByClassName("demo");
     var lastCaption = document.getElementById("caption" + lastSlideIndex);
-    var caption = document.getElementById("caption" + slideIndex);
+    
     if (slideIndex > slides.length) {
         slideIndex = 1
     }
     if (slideIndex < 1) {
         slideIndex = slides.length
     }
+    
+    var caption = document.getElementById("caption" + slideIndex);
+    
     for (var i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
     }
