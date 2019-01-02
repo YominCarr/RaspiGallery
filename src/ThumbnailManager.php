@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alex
- * Date: 25.08.2018
- * Time: 16:43
- */
 
 require_once __DIR__.'/FileManager.php';
+require_once __DIR__.'/ExifData.php';
 
 class ThumbnailManager
 {
@@ -83,7 +78,7 @@ class ThumbnailManager
         imagedestroy($thumbImage);
         imagedestroy($srcImage);
 
-        $thumbnail = new Image($image->getName(), $thumbnailPath, $type, $newWidth, $newHeight, time());
+        $thumbnail = new Image($image->getName(), $thumbnailPath, $type, $newWidth, $newHeight, time(), time(), new ExifData());
         return $thumbnail;
     }
 }
