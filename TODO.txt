@@ -1,0 +1,11 @@
+PHP:
+  * Provide paths to all images & thumbnails
+  * Provide only 4 (Config) containers each
+  * Set containers to first images as these are most probably clicked first
+  * What about caption??? Needs to be read server side except if I want to transition it whole to JS -> Read all captions and make most invisible
+
+JS:
+  * Click on image -> Reset containers
+  * npics > 2 ? 0 = previous : 0 = current
+  * Click on arrows / thumbnails -> same but maybe more intelligent (in case of arrows)?
+  * Toggle caption visibility as is now

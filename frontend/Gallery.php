@@ -146,15 +146,13 @@ class Gallery
         $str = "";
         $countImages = sizeof($images);
 
-        $i = 1;
-        foreach ($images as $image) {
+        for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < $countImages; ++$i, ++$nr) {
+            $image = $images[$i];
 
             $str .= "<div class=\"mySlides\">";
-            $str .= "<div class=\"numbertext\">$i / $countImages</div>";
-            $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage");
+            $str .= "<div class=\"numbertext\">$nr / $countImages</div>";
+            $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage", "slideshowimage_$i");
             $str .= "</div>";
-
-            ++$i;
         }
         return $str;
     }
@@ -166,6 +164,7 @@ class Gallery
         return $str;
     }
 
+    // @todo consider reading these with javascript once the image is loaded instead
     private function getSlideshowCaptionHTML(array $images): string
     {
         $str = "<div class=\"caption-container\">";
@@ -204,14 +203,13 @@ class Gallery
     private function getThumbnailsForSlideShowHTML(array $images): string
     {
         $str = "<div class='thumbnailRow'>";
-        $i = 1;
-        foreach ($images as $image) {
+        for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i, ++$nr) {
+            $image = $images[$i];
+            
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
-            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
-            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo");
+            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($nr)'>";
+            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo", "demo_$i");
             $str .= "</div>";
-
-            ++$i;
         }
         $str .= "</div>";
         return $str;

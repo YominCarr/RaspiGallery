@@ -56,7 +56,7 @@ class Image extends FileSystemEntity
         return $this->exifData;
     }
 
-    public function getDisplayHTML(FileManager $fileManager, string $classes, string $alt = ""): string
+    public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = ""): string
     {
         $src = $this->getRelativePath($fileManager);
         $src = $fileManager->pathToUrl($src);
@@ -65,7 +65,7 @@ class Image extends FileSystemEntity
             $alt = $this->getName();
         }
 
-        $str = "<img src='$src' alt='$alt' class='$classes'>";
+        $str = "<img src='$src' alt='$alt' class='$classes' id='$id'>";
         return $str;
     }
 
