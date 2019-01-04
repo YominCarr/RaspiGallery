@@ -58,8 +58,7 @@ class Image extends FileSystemEntity
 
     public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = ""): string
     {
-        $src = $this->getRelativePath($fileManager);
-        $src = $fileManager->pathToUrl($src);
+        $src = $this->getRelativePathAsUrl($fileManager);
 
         if (empty($alt)) {
             $alt = $this->getName();

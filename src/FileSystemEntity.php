@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alex
- * Date: 25.08.2018
- * Time: 21:36
- */
 
 require_once __DIR__ . '/FileManager.php';
 
@@ -32,6 +26,12 @@ class FileSystemEntity
     public function getRelativePath(FileManager $fileManager): string
     {
         return $fileManager->absoluteToRelativePath($this->getFullPath());
+    }
+
+    public function getRelativePathAsUrl(FileManager $fileManager): string
+    {
+        $path = $this->getRelativePath($fileManager);
+        return $fileManager->pathToUrl($path);
     }
 
     public function getRelativePathToPhotoDir(FileManager $fileManager): string

@@ -118,3 +118,7 @@ img.demo {
 .demo:hover {
     opacity: 1;
 }
+
+.allImagesMeta {
+    display: none;
+}

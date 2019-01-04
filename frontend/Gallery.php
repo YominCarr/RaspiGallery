@@ -136,6 +136,7 @@ class Gallery
         $str .= $this->getSlideshowControlsHTML();
         $str .= $this->getSlideshowCaptionHTML($images);
         $str .= $this->getThumbnailsForSlideShowHTML($images);
+        $str .= $this->getSlideshowImagesMetaHTML($images);
 
         $str .= "</div></div>";
         return $str;
@@ -212,6 +213,30 @@ class Gallery
             $str .= "</div>";
         }
         $str .= "</div>";
+        return $str;
+    }
+
+    private function getSlideshowImagesMetaHTML(array $images): string
+    {
+        $str ="<div class=\"allImagesMeta\">";
+
+        for ($i = 0, $nr = 1; $i < sizeof($images); ++$i, ++$nr) {
+            $image = $images[$i];
+            $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
+            $src = $image->getRelativePathAsUrl($this->fileManager);
+            $alt = $image->getName();
+            $caption = $this->getSlideshowCaption($image);
+            $thumbSrc = $thumbnail->getRelativePathAsUrl($this->fileManager);
+
+            $str .= "<div id='image" . $i . "Meta'>";
+            $str .= "<div id='image" . $i . "Meta_src'>" . $src . "</div>";
+            $str .= "<div id='image" . $i . "Meta_alt'>" . $alt . "</div>";
+            $str .= "<div id='image" . $i . "Meta_caption'>" . $caption . "</div>";
+            $str .= "<div id='image" . $i . "Meta_thumbSrc'>" . $thumbSrc . "</div>";
+            $str .= "</div>";
+        }
+        $str .= "</div>";
+
         return $str;
     }
 }
