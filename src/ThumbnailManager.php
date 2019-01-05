@@ -3,6 +3,20 @@
 require_once __DIR__ . '/FileManager.php';
 require_once __DIR__ . '/ExifData.php';
 
+
+class ThumbnailCreationRequest
+{
+
+    public $name = "";
+    public $path = "";
+
+    public function __construct(string $name, string $path) {
+        $this->name = $name;
+        $this->path = $path;
+    }
+
+}
+
 // @todo Need a mechanism to remove old thumbnails from disk, maybe offer a file for cron and also for periodic calling
 // @todo Thumbnails should be generated asynchronously and dummy images should be in place and periodicly be replaced then
 class ThumbnailManager
@@ -101,7 +115,7 @@ class ThumbnailManager
 
     private function addThumbnailCreationRequestToBuffer(string $name, string $fullPath)
     {
-        $this->thumbnailRequestBuffer[] = ["name" => $name, "path" => $fullPath];
+        $this->thumbnailRequestBuffer[] = new ThumbnailCreationRequest($name, $fullPath);
     }
 
     // @todo also need information about the element of which the src has to be changed once the thumbnail is generated
@@ -110,10 +124,10 @@ class ThumbnailManager
     {
         $html = "<div id='thumbnailCreationRequests'>";
 
-        foreach($this->thumbnailRequestBuffer as $request) {
+        foreach ($this->thumbnailRequestBuffer as $request) {
             $html .= "<div class='request'>";
-            $html .= "<div class='name'>" . $request["name"] .= "</div>";
-            $html .= "<div class='path'>" . $request["path"] .= "</div>";
+            $html .= "<div class='name'>" . $request->name .= "</div>";
+            $html .= "<div class='path'>" . $request->path .= "</div>";
             $html .= "</div>";
         }
 
