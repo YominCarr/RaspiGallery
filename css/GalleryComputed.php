@@ -19,4 +19,6 @@ $widthPerPic = (100.0 / Config::numberImagesPerRow) * 0.9;
 .thumbnailColumn {
     min-width: <?php echo $widthPerPic; ?>%;
     max-width: <?php echo $widthPerPic; ?>%;
+    width: <?php echo Config::thumbnailMaxWidth; ?>px;
+    height: <?php echo Config::thumbnailMaxHeight; ?>px;
 }
