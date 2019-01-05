@@ -3,6 +3,8 @@
 require_once __DIR__.'/FileManager.php';
 require_once __DIR__.'/ExifData.php';
 
+// @todo Need a mechanism to remove old thumbnails from disk, maybe offer a file for cron and also for periodic calling
+// @todo Thumbnails should be generated asynchronously and dummy images should be in place and periodicly be replaced then
 class ThumbnailManager
 {
 
@@ -25,6 +27,7 @@ class ThumbnailManager
     }
 
     // @todo Add some checking that found thumbnail has the correct size, otherwise delete and redo perhaps
+    // @todo Also what if the image has changed? Compare date of image and thumbnail, if image is newer redo
     private function thumbnailExists(Image $image): bool
     {
         return file_exists($this->getThumbnailPathForImage($image));
