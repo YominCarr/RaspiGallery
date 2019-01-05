@@ -59,7 +59,7 @@ class Gallery
                 if (strpos($image->getFullPath(), "img/dummy.png") !== false) {
                     $thumbnail = $image;
                 } else {
-                    $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
+                    $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
                 }
 
                 $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
@@ -83,7 +83,7 @@ class Gallery
         for ($i = 0; $i < sizeof($images); ++$i) {
             $image = $images[$i];
 
-            $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
+            $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
             $thumbnailHTMLs[] = $this->createSlideshowLinkAroundImage($thumbnailHTML, $i);
         }
@@ -210,7 +210,7 @@ class Gallery
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
 
-            $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
+            $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
             $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo", "demo$i");
             $str .= "</div>";
@@ -228,7 +228,7 @@ class Gallery
 
         for ($i = 0; $i < $countImages; ++$i) {
             $image = $images[$i];
-            $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
+            $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             $src = $image->getRelativePathAsUrl($this->fileManager);
             $alt = $image->getName();
             $caption = $this->getSlideshowCaption($image);

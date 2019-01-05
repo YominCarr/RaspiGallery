@@ -1,12 +1,23 @@
 <?php
 
-require_once __DIR__.'/FileManager.php';
-require_once __DIR__.'/ExifData.php';
+require_once __DIR__ . '/FileManager.php';
+require_once __DIR__ . '/ExifData.php';
 
 // @todo Need a mechanism to remove old thumbnails from disk, maybe offer a file for cron and also for periodic calling
 // @todo Thumbnails should be generated asynchronously and dummy images should be in place and periodicly be replaced then
 class ThumbnailManager
 {
+
+    public function getThumbnailOrDummy(FileManager $fileManager, Image $image): Image
+    {
+        if ($this->thumbnailExists($image)) {
+            $thumbnailPath = $this->getThumbnailPathForImage($image);
+            $thumbnail = Image::createImage($image->getName(), $thumbnailPath);
+            return $thumbnail;
+        } else {
+            return Image::getDummyImage($fileManager, $image->getName());
+        }
+    }
 
     public function generateThumbnailIfNeeded(FileManager $fileManager, Image $image): Image
     {
