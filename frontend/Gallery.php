@@ -76,12 +76,12 @@ class Gallery
     {
         $thumbnailHTMLs = [];
 
-        $i = 1;
-        foreach ($images as $image) {
+        for ($i = 0; $i < sizeof($images); ++$i) {
+            $image = $images[$i];
+
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
             $thumbnailHTMLs[] = $this->createSlideshowLinkAroundImage($thumbnailHTML, $i);
-            ++$i;
         }
 
         return $this->getGalleryHTML($thumbnailHTMLs);
@@ -125,7 +125,6 @@ class Gallery
         return "<div class='emptyDummyImage'></div>";
     }
 
-    // @todo only show a few images!
     private function getSlideshowOverlayHTML($images)
     {
         $str = "<div id=\"myModal\" class=\"modal\">";
@@ -147,11 +146,11 @@ class Gallery
         $str = "";
         $countImages = sizeof($images);
 
-        for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < $countImages; ++$i, ++$nr) {
+        for ($i = 0; $i < Config::numberImagesPerRow && $i < $countImages; ++$i) {
             $image = $images[$i];
 
-            $str .= "<div class=\"mySlides\">";
-            $str .= "<div class=\"numbertext\">$nr / $countImages</div>";
+            $str .= "<div class='mySlides' id='mySlide_$i'>";
+            $str .= "<div class='numbertext' id='numbertext_$i'>$i / $countImages</div>";
             $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage", "slideshowimage_$i");
             $str .= "</div>";
         }
@@ -169,10 +168,10 @@ class Gallery
     private function getSlideshowCaptionHTML(array $images): string
     {
         $str = "<div class=\"caption-container\">";
-        for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i, ++$nr) {
+        for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
 
-            $str .= "<p id=\"caption$nr\" class='caption'>";
+            $str .= "<p id=\"caption$i\" class='caption'>";
             $str .= $this->getSlideshowCaption($image);
             $str .= "</p>";
 
@@ -204,11 +203,11 @@ class Gallery
     private function getThumbnailsForSlideShowHTML(array $images): string
     {
         $str = "<div class='thumbnailRow'>";
-        for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i, ++$nr) {
+        for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
             
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
-            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($nr)'>";
+            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
             $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo", "demo_$i");
             $str .= "</div>";
         }
@@ -220,7 +219,7 @@ class Gallery
     {
         $str ="<div class=\"allImagesMeta\">";
 
-        for ($i = 0, $nr = 1; $i < sizeof($images); ++$i, ++$nr) {
+        for ($i = 0; $i < sizeof($images); ++$i) {
             $image = $images[$i];
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
             $src = $image->getRelativePathAsUrl($this->fileManager);

@@ -6,7 +6,7 @@ function closeModal() {
     document.getElementById('myModal').style.display = "none";
 }
 
-var lastSlideIndex = 1, slideIndex = 1;
+var lastSlideIndex = 0, slideIndex = 0;
 
 // Next/previous controls
 function plusSlides(n) {
@@ -27,24 +27,24 @@ function showSlides() {
     var slides = container.getElementsByClassName("mySlides");
     var dots = container.getElementsByClassName("demo");
     var lastCaption = document.getElementById("caption" + lastSlideIndex);
-    
-    if (slideIndex > slides.length) {
-        slideIndex = 1
+
+    if (slideIndex >= slides.length) {
+        slideIndex = 0
     }
-    if (slideIndex < 1) {
+    if (slideIndex < 0) {
         slideIndex = slides.length
     }
-    
+
     var caption = document.getElementById("caption" + slideIndex);
-    
+
     for (var i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
     }
     for (var i = 0; i < dots.length; i++) {
         dots[i].className = dots[i].className.replace(" active", "");
     }
-    slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].className += " active";
+    slides[slideIndex ].style.display = "block";
+    dots[slideIndex ].className += " active";
     lastCaption.style.display = "none";
     caption.style.display = "block";
 }
