@@ -31,5 +31,7 @@ echo $gallery->getFoldersAndImagesGalleryHTML($content);
 
 ?>
 
+<?php // Must be at the end as it starts an event loop which requires a fully loaded dom ?>
+<script type='text/javascript' src='js/Thumbnails.js'></script>
 </body>
 </html>
