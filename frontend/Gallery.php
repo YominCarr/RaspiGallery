@@ -169,13 +169,13 @@ class Gallery
     private function getSlideshowCaptionHTML(array $images): string
     {
         $str = "<div class=\"caption-container\">";
-        $i = 1;
-        foreach ($images as $image) {
-            $str .= "<p id=\"caption$i\" class='caption'>";
+        for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i, ++$nr) {
+            $image = $images[$i];
+
+            $str .= "<p id=\"caption$nr\" class='caption'>";
             $str .= $this->getSlideshowCaption($image);
             $str .= "</p>";
 
-            ++$i;
         }
         $str .= "</div>";
         return $str;
