@@ -46,3 +46,7 @@ img.hover-shadow {
 .thumbnailColumn .emptyDummyImage {
     display: block;
 }
+
+#thumbnailCreationRequests {
+    display: none;
+}

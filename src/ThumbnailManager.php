@@ -8,13 +8,16 @@ require_once __DIR__ . '/ExifData.php';
 class ThumbnailManager
 {
 
-    public function getThumbnailOrDummy(FileManager $fileManager, Image $image): Image
+    private $thumbnailRequestBuffer = [];
+
+    public function getThumbnailOrDummyAndBufferRequest(FileManager $fileManager, Image $image): Image
     {
         if ($this->thumbnailExists($image)) {
             $thumbnailPath = $this->getThumbnailPathForImage($image);
             $thumbnail = Image::createImage($image->getName(), $thumbnailPath);
             return $thumbnail;
         } else {
+            $this->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath());
             return Image::getDummyImage($fileManager, $image->getName());
         }
     }
@@ -94,5 +97,27 @@ class ThumbnailManager
 
         $thumbnail = new Image($image->getName(), $thumbnailPath, $type, $newWidth, $newHeight, time(), time(), new ExifData());
         return $thumbnail;
+    }
+
+    private function addThumbnailCreationRequestToBuffer(string $name, string $fullPath)
+    {
+        $this->thumbnailRequestBuffer[] = ["name" => $name, "path" => $fullPath];
+    }
+
+    // @todo also need information about the element of which the src has to be changed once the thumbnail is generated
+    // @todo take care the generation events from nomrla pßage and slideshow don't interact -> js
+    public function getThumbnailRequestHTML(): string
+    {
+        $html = "<div id='thumbnailCreationRequests'>";
+
+        foreach($this->thumbnailRequestBuffer as $request) {
+            $html .= "<div class='request'>";
+            $html .= "<div class='name'>" . $request["name"] .= "</div>";
+            $html .= "<div class='path'>" . $request["path"] .= "</div>";
+            $html .= "</div>";
+        }
+
+        $html .= "</div>";
+        return $html;
     }
 }
