@@ -9,6 +9,8 @@ thumbnailEventLoop(); // Start the thumbnail creation event loop as soon as the 
 
 // @todo Issue: thumbnails in slideshow which are not displayed from the beginning lack a request!
 
+// @todo debug order of thumbnails, seems to be alternating instead of sequential
+
 function thumbnailEventLoop() {
     extractRequestsFromDom();
 
