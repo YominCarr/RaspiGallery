@@ -70,7 +70,7 @@ function calculateFirstImageIndexToDisplay(displayCount, countImages) {
     if (imageIndex == 0) { // No image before
         firstImageIndex = 0;
     } else if (imageIndex >= countImages - (displayCount - 2)) { // Not enough images after
-        firstImageIndex = countImages - (displayCount - 2) - imageIndex - 2;
+        firstImageIndex = countImages - displayCount;
     }
 
     if (firstImageIndex < 0) { //Forbid underflow
@@ -86,7 +86,7 @@ function calculateSlideToDisplay(displayCount, countImages) {
     if (imageIndex == 0) { // No image before
         slideIndex = 0;
     } else if (imageIndex >= countImages - (displayCount - 2)) { // Not enough images after
-        slideIndex = countImages - (displayCount - 2) - imageIndex + 1;
+        slideIndex = imageIndex - countImages + displayCount;
     }
 
     return slideIndex;
