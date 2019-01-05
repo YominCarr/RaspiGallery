@@ -1,7 +1,7 @@
 var thumbnailRequests = [];
 var currentRequests = [];
 // @todo make max configurable
-var maxRequests = 3;
+var maxRequests = 6; // Typically get 2 requests per thumbnail because of main page and slideshow
 
 // @todo currently have dummy also in meta elements -> need to replace these too!
 
@@ -40,12 +40,28 @@ function extractRequestsFromDom() {
 
 function issueNewRequests() {
     for (var i = currentRequests.length; i < maxRequests && thumbnailRequests.length > 0; ++i) {
-        // @todo only if not a request with the same image is currently processing
         var request = thumbnailRequests.shift();
-        currentRequests.push(request);
 
-        postAjaxRequest("generateThumbnail.php", request, replaceImageSourcesAndRemoveRequest);
+        if (similarRequestInProgress(request)) {
+            // This thumbnail is already in generation, requeue this one at the end
+            thumbnailRequests.push(request);
+        } else {
+            // Actually carry out that request
+            currentRequests.push(request);
+            postAjaxRequest("generateThumbnail.php", request, replaceImageSourcesAndRemoveRequest);
+        }
     }
+}
+
+function similarRequestInProgress(request) {
+    var similarRequestFound = false;
+    for (var i = 0; i < currentRequests.length; ++i) {
+        if (currentRequests[i].path == request.path) {
+            similarRequestFound = true;
+            break;
+        }
+    }
+    return similarRequestFound;
 }
 
 function postAjaxRequest(url, data, successCallback) {
