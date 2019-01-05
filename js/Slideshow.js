@@ -1,9 +1,7 @@
-// Open the Modal
 function openModal() {
     document.getElementById('myModal').style.display = "block";
 }
 
-// Close the Modal
 function closeModal() {
     document.getElementById('myModal').style.display = "none";
 }
@@ -25,8 +23,9 @@ function currentSlide(n) {
 }
 
 function showSlides() {
-    var slides = document.getElementsByClassName("mySlides");
-    var dots = document.getElementsByClassName("demo");
+    var container = document.getElementById("myModal");
+    var slides = container.getElementsByClassName("mySlides");
+    var dots = container.getElementsByClassName("demo");
     var lastCaption = document.getElementById("caption" + lastSlideIndex);
     
     if (slideIndex > slides.length) {
