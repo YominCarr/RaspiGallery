@@ -81,10 +81,10 @@ class Image extends FileSystemEntity
         return new Image($name, $filePath, $type, $width, $height, $creationDate, $modificationDate, $exif);
     }
 
-    public static function getDummyImage(FileManager $fileManager): Image
+    public static function getDummyImage(FileManager $fileManager, string $name = "dummy.png"): Image
     {
-        $name = "dummy.png";
-        $filePath = $fileManager->concatPaths(Config::documentRoot, "img/dummy.png");
+        $filePath = $fileManager->concatPaths($fileManager->pathToDir($_SERVER['DOCUMENT_ROOT']), Config::documentRoot);
+        $filePath = $fileManager->concatPaths($filePath, "img/dummy.png");
         return self::createImage($name, $filePath);
     }
 }
