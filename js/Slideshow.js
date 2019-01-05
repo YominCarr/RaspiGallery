@@ -45,12 +45,7 @@ function showSlides() {
 
     hideSlideshowElement(slides, captions, thumbnails);
     updateSlidesContent(slides, countImages);
-
-    var slideIndex = calculateSlideToDisplay(slides.length, countImages);
-
-    slides[slideIndex].style.display = "block";
-    captions[slideIndex].style.display = "block";
-    thumbnails[slideIndex].className += " active";
+    displayAppropriateSlide(slides, countImages, captions, thumbnails);
 }
 
 function registerKeyboardHandlers() {
@@ -157,4 +152,12 @@ function changeImageSourceAndAlt(element, src, alt) {
 
 function changeImageSource(element, src) {
     element.src = src;
+}
+
+function displayAppropriateSlide(slides, countImages, captions, thumbnails) {
+    var slideIndex = calculateSlideToDisplay(slides.length, countImages);
+
+    slides[slideIndex].style.display = "block";
+    captions[slideIndex].style.display = "block";
+    thumbnails[slideIndex].className += " active";
 }
