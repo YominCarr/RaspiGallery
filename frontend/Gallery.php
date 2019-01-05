@@ -49,7 +49,11 @@ class Gallery
         $thumbnailHTMLs = [];
 
         foreach ($folders as $folder) {
-            $image = $folder->getRandomImage($this->fileManager);
+            if (Config::folderThumbnailDisplay == FolderThumbnail::first) {
+                $image = $folder->getFirstImage($this->fileManager);
+            } else if (Config::folderThumbnailDisplay == FolderThumbnail::random) {
+                $image = $folder->getRandomImage($this->fileManager);
+            }
             // @todo else ?
             if ($image != NULL) {
                 if (strpos($image->getFullPath(), "img/dummy.png") !== false) {

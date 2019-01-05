@@ -36,4 +36,13 @@ class Folder extends FileSystemEntity
         }
     }
 
+    public function getFirstImage(FileManager $fileManager): Image
+    {
+        if (sizeof($this->content["images"]) > 0) {
+            return $this->content["images"][0];
+        } else {
+            return Image::getDummyImage($fileManager);
+        }
+    }
+
 }

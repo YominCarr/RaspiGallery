@@ -1,5 +1,10 @@
 <?php
 
+class FolderThumbnail {
+    const first = 0;
+    const random = 1;
+}
+
 class SortingMethod {
     const fileName = 0;
     const fileCreationDate = 0;
@@ -24,6 +29,8 @@ class Config
     // Set to true for better quality
     const thumbnailResampleInsteadResize = true;
     const thumbnailJPEGQuality = 75;
+
+    const folderThumbnailDisplay = FolderThumbnail::random;
 
     const numberImagesPerRow = 4;
 
