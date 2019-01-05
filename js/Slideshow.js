@@ -6,51 +6,94 @@ function closeModal() {
     document.getElementById('myModal').style.display = "none";
 }
 
-var lastSlideIndex = 0, slideIndex = 0;
+var imageIndex = 0;
 
 // Next/previous controls
 function plusSlides(n) {
-    lastSlideIndex = slideIndex;
-    slideIndex += n;
+    imageIndex += n;
     showSlides();
 }
 
 // Thumbnail image controls
 function currentSlide(n) {
-    lastSlideIndex = slideIndex;
-    slideIndex = n;
+    imageIndex = n;
     showSlides();
 }
 
 function showSlides() {
     var container = document.getElementById("myModal");
     var slides = container.getElementsByClassName("mySlides");
-    var dots = container.getElementsByClassName("demo");
-    var lastCaption = document.getElementById("caption" + lastSlideIndex);
+    var captions = container.getElementsByClassName("caption");
+    var thumbnails = container.getElementsByClassName("demo");
 
-    if (slideIndex >= slides.length) {
-        slideIndex = 0
+    var countImages = document.getElementById("countImages").innerHTML;
+
+    if (imageIndex >= countImages) {
+        imageIndex = 0
     }
-    if (slideIndex < 0) {
-        slideIndex = slides.length
+    if (imageIndex < 0) {
+        imageIndex = countImages - 1;
     }
 
-    var caption = document.getElementById("caption" + slideIndex);
+    hideSlideshowElement(slides, captions, thumbnails);
+    updateSlidesContent(slides, countImages);
 
-    for (var i = 0; i < slides.length; i++) {
+    var slideIndex = calculateSlideToDisplay(slides.length, countImages);
+
+    slides[slideIndex].style.display = "block";
+    captions[slideIndex].style.display = "block";
+    thumbnails[slideIndex].className += " active";
+}
+
+function hideSlideshowElement(slides, captions, thumbnails) {
+    for (var i = 0; i < slides.length; ++i) {
         slides[i].style.display = "none";
     }
-    for (var i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
+    for (var i = 0; i < captions.length; ++i) {
+        captions[i].style.display = "none";
     }
-    slides[slideIndex].style.display = "block";
-    dots[slideIndex].className += " active";
-    lastCaption.style.display = "none";
-    caption.style.display = "block";
+    for (var i = 0; i < thumbnails.length; ++i) {
+        thumbnails[i].className = thumbnails[i].className.replace(" active", "");
+    }
+}
+
+function updateSlidesContent(slides, countImages) {
+    var firstImageIndex = calculateFirstImageIndexToDisplay(slides.length, countImages);
+    for (var i = 0, j = firstImageIndex; i < slides.length && j < countImages; ++i, ++j) {
+        displayImageInSlideContainer(j, i);
+    }
+}
+
+function calculateFirstImageIndexToDisplay(displayCount, countImages) {
+    var firstImageIndex = imageIndex - 1;
+
+    if (imageIndex == 0) { // No image before
+        firstImageIndex = 0;
+    } else if (imageIndex >= countImages - (displayCount - 2)) { // Not enough images after
+        firstImageIndex = countImages - (displayCount - 2) - imageIndex - 2;
+    }
+
+    if (firstImageIndex < 0) { //Forbid underflow
+        firstImageIndex = 0;
+    }
+
+    return firstImageIndex;
+}
+
+function calculateSlideToDisplay(displayCount, countImages) {
+    var slideIndex = 1;
+
+    if (imageIndex == 0) { // No image before
+        slideIndex = 0;
+    } else if (imageIndex >= countImages - (displayCount - 2)) { // Not enough images after
+        slideIndex = countImages - (displayCount - 2) - imageIndex + 1;
+    }
+
+    return slideIndex;
 }
 
 function displayImageInSlideContainer(imageId, containerId) {
-    var metaIdBase = "image" + imageId;
+    var metaIdBase = "image" + imageId + "Meta";
 
     var countImages = document.getElementById("countImages").innerHTML;
     var src = document.getElementById(metaIdBase + "_src").innerHTML;
