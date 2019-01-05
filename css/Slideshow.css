@@ -119,6 +119,6 @@ img.demo {
     opacity: 1;
 }
 
-.allImagesMeta {
+#allImagesMeta {
     display: none;
 }

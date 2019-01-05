@@ -146,12 +146,12 @@ class Gallery
         $str = "";
         $countImages = sizeof($images);
 
-        for ($i = 0; $i < Config::numberImagesPerRow && $i < $countImages; ++$i) {
+        for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < $countImages; ++$i, ++$nr) {
             $image = $images[$i];
 
-            $str .= "<div class='mySlides' id='mySlide_$i'>";
-            $str .= "<div class='numbertext' id='numbertext_$i'>$i / $countImages</div>";
-            $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage", "slideshowimage_$i");
+            $str .= "<div class='mySlides' id='mySlide$i'>";
+            $str .= "<div class='numbertext' id='numbertext$i'>$nr / $countImages</div>";
+            $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage", "slideshowimage$i");
             $str .= "</div>";
         }
         return $str;
@@ -205,10 +205,10 @@ class Gallery
         $str = "<div class='thumbnailRow'>";
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
-            
+
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
             $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
-            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo", "demo_$i");
+            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo", "demo$i");
             $str .= "</div>";
         }
         $str .= "</div>";
@@ -217,9 +217,12 @@ class Gallery
 
     private function getSlideshowImagesMetaHTML(array $images): string
     {
-        $str ="<div class=\"allImagesMeta\">";
+        $str = "<div id=\"allImagesMeta\">";
 
-        for ($i = 0; $i < sizeof($images); ++$i) {
+        $countImages = sizeof($images);
+        $str .= "<div id='countImages'>$countImages</div>";
+
+        for ($i = 0; $i < $countImages; ++$i) {
             $image = $images[$i];
             $thumbnail = $this->thumbnailManager->generateThumbnailIfNeeded($this->fileManager, $image);
             $src = $image->getRelativePathAsUrl($this->fileManager);
