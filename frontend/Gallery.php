@@ -50,21 +50,31 @@ class Gallery
     {
         $thumbnailHTMLs = [];
 
-        foreach ($folders as $folder) {
+        for ($i = 0; $i < sizeof($folders); ++$i) {
+            $folder = $folders[$i];
+
             if (Config::folderThumbnailDisplay == FolderThumbnail::first) {
                 $image = $folder->getFirstImage($this->fileManager);
             } else if (Config::folderThumbnailDisplay == FolderThumbnail::random) {
                 $image = $folder->getRandomImage($this->fileManager);
             }
-            // @todo else ?
-            if ($image != NULL) {
+
+            if ($image == NULL) {
+                // @todo empty folder image! -> multiple dummy types
+            } else {
                 if (strpos($image->getFullPath(), "img/dummy.png") !== false) {
                     $thumbnail = $image;
                 } else {
-                    $thumbnail = $this->thumbnailManager->getThumbnailOrDummyAndBufferRequest($this->fileManager, $image);
+                    $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
                 }
 
-                $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
+                $id = "folderThumbnail$i";
+                $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow", $id);
+
+                if ($thumbnail->isDummy()) {
+                    $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
+                }
+
                 $folderPath = $this->fileManager->trimTrailingDirSeparator($folder->getRelativePathToPhotoDir($this->fileManager));
                 $thumbnailHTMLs[] = $this->createFolderLinkAroundImage($folderPath, $thumbnailHTML);
             }
@@ -84,9 +94,15 @@ class Gallery
 
         for ($i = 0; $i < sizeof($images); ++$i) {
             $image = $images[$i];
+            $id = "imageThumbnail$i";
 
-            $thumbnail = $this->thumbnailManager->getThumbnailOrDummyAndBufferRequest($this->fileManager, $image);
-            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow");
+            $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
+            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow", $id);
+
+            if ($thumbnail->isDummy()) {
+                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
+            }
+
             $thumbnailHTMLs[] = $this->createSlideshowLinkAroundImage($thumbnailHTML, $i);
         }
 
@@ -211,11 +227,16 @@ class Gallery
         $str = "<div class='thumbnailRow'>";
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
+            $id = "demo$i";
 
-            $thumbnail = $this->thumbnailManager->getThumbnailOrDummyAndBufferRequest($this->fileManager, $image);
-            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>";
-            $str .= $thumbnail->getDisplayHTML($this->fileManager, "demo", "demo$i");
-            $str .= "</div>";
+            $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
+            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "demo", $id);
+
+            if ($thumbnail->isDummy()) {
+                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
+            }
+
+            $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>" . $thumbnailHTML . "</div>";
         }
         $str .= "</div>";
         return $str;
@@ -230,7 +251,8 @@ class Gallery
 
         for ($i = 0; $i < $countImages; ++$i) {
             $image = $images[$i];
-            $thumbnail = $this->thumbnailManager->getThumbnailOrDummyAndBufferRequest($this->fileManager, $image);
+            $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
+
             $src = $image->getRelativePathAsUrl($this->fileManager);
             $alt = $image->getName();
             $caption = $this->getSlideshowCaption($image);

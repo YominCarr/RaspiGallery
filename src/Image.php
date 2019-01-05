@@ -14,6 +14,8 @@ class Image extends FileSystemEntity
     private $modificationDate;
     private $exifData;
 
+    private $dummy = false;
+
     public function __construct(string $name, string $fullPath, int $type, string $width, string $height,
                                 string $creationDate, string $modificationDate, ExifData $exifData)
     {
@@ -56,6 +58,11 @@ class Image extends FileSystemEntity
         return $this->exifData;
     }
 
+    public function isDummy(): bool
+    {
+        return $this->dummy;
+    }
+
     public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = ""): string
     {
         $src = $this->getRelativePathAsUrl($fileManager);
@@ -85,7 +92,11 @@ class Image extends FileSystemEntity
     {
         $filePath = $fileManager->concatPaths($fileManager->pathToDir($_SERVER['DOCUMENT_ROOT']), Config::documentRoot);
         $filePath = $fileManager->concatPaths($filePath, "img/dummy.png");
-        return self::createImage($name, $filePath);
+
+        $image = self::createImage($name, $filePath);
+        $image->dummy = true;
+
+        return $image;
     }
 }
 

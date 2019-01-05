@@ -9,10 +9,12 @@ class ThumbnailCreationRequest
 
     public $name = "";
     public $path = "";
+    public $idSelector = "";
 
-    public function __construct(string $name, string $path) {
+    public function __construct(string $name, string $path, string $idSelector) {
         $this->name = $name;
         $this->path = $path;
+        $this->idSelector = $idSelector;
     }
 
 }
@@ -24,14 +26,13 @@ class ThumbnailManager
 
     private $thumbnailRequestBuffer = [];
 
-    public function getThumbnailOrDummyAndBufferRequest(FileManager $fileManager, Image $image): Image
+    public function getThumbnailOrDummy(FileManager $fileManager, Image $image): Image
     {
         if ($this->thumbnailExists($image)) {
             $thumbnailPath = $this->getThumbnailPathForImage($image);
             $thumbnail = Image::createImage($image->getName(), $thumbnailPath);
             return $thumbnail;
         } else {
-            $this->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath());
             return Image::getDummyImage($fileManager, $image->getName());
         }
     }
@@ -113,13 +114,12 @@ class ThumbnailManager
         return $thumbnail;
     }
 
-    private function addThumbnailCreationRequestToBuffer(string $name, string $fullPath)
+    public function addThumbnailCreationRequestToBuffer(string $name, string $fullPath, string $idSelector)
     {
-        $this->thumbnailRequestBuffer[] = new ThumbnailCreationRequest($name, $fullPath);
+        $this->thumbnailRequestBuffer[] = new ThumbnailCreationRequest($name, $fullPath, $idSelector);
     }
 
-    // @todo also need information about the element of which the src has to be changed once the thumbnail is generated
-    // @todo take care the generation events from nomrla pßage and slideshow don't interact -> js
+    // @todo take care the generation events from normal page and slideshow don't interact -> js
     public function getThumbnailRequestHTML(): string
     {
         $html = "<div id='thumbnailCreationRequests'>";
@@ -128,6 +128,7 @@ class ThumbnailManager
             $html .= "<div class='request'>";
             $html .= "<div class='name'>" . $request->name .= "</div>";
             $html .= "<div class='path'>" . $request->path .= "</div>";
+            $html .= "<div class='idSelector'>" . $request->idSelector .= "</div>";
             $html .= "</div>";
         }
 
