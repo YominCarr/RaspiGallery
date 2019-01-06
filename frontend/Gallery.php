@@ -190,6 +190,9 @@ class Gallery
     private function getSlideshowCaptionHTML(array $images): string
     {
         $str = "<div class=\"caption-container\">";
+        $str .= "<h2 id='exifHeading'>Exif Data</h2>";
+        $str .= "<a id=\"openCloseExif\" onclick=\"openExifBlock()\">&#10094;</a>";
+        $str .= "<div id='exif'>";
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
 
@@ -198,7 +201,7 @@ class Gallery
             $str .= "</p>";
 
         }
-        $str .= "</div>";
+        $str .= "</div></div>";
         return $str;
     }
 

@@ -47,7 +47,7 @@
 
 .slideshowimage {
     max-width: 100%;
-    height: 60%;
+    height: 67%;
 }
 
 /* Next & previous buttons */
@@ -120,5 +120,28 @@ img.demo {
 }
 
 #allImagesMeta {
+    display: none;
+}
+
+#exifHeading {
+    display: inline-block;
+}
+
+#openCloseExif {
+    transform: rotate(-90deg);
+    display: inline-block;
+    cursor: pointer;
+    width: auto;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+    margin-left: 20px;
+}
+
+#exif {
     display: none;
 }

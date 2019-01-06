@@ -161,3 +161,21 @@ function displayAppropriateSlide(slides, countImages, captions, thumbnails) {
     captions[slideIndex].style.display = "block";
     thumbnails[slideIndex].className += " active";
 }
+
+function openExifBlock() {
+    var controls = document.getElementById("openCloseExif");
+    controls.style.transform = "rotate(90deg)";
+    controls.onclick = closeExifBlock;
+
+    var exif = document.getElementById("exif");
+    exif.style.display = "block";
+}
+
+function closeExifBlock() {
+    var controls = document.getElementById("openCloseExif");
+    controls.style.transform = "rotate(-90deg)";
+    controls.onclick = openExifBlock;
+
+    var exif = document.getElementById("exif");
+    exif.style.display = "none";
+}
