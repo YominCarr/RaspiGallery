@@ -193,7 +193,7 @@ class Gallery
     {
         $str = "<div id=\"captionContainer\">";
         $str .= "<h2 id='exifHeading'>Exif Data</h2>";
-        $str .= "<a id=\"openCloseExif\" onclick=\"openExifBlock()\">&#10094;</a>";
+        $str .= "<a id=\"openCloseExif\" onclick=\"closeExifBlock()\">&#10094;</a>";
         $str .= "<div id='exif'>";
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];

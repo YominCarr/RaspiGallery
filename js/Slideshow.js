@@ -174,7 +174,7 @@ function openExifBlock() {
     controls.onclick = closeExifBlock;
 
     var exif = document.getElementById("exif");
-    exif.style.display = "block";
+    exif.style.opacity = "1";
 }
 
 function closeExifBlock() {
@@ -183,5 +183,5 @@ function closeExifBlock() {
     controls.onclick = openExifBlock;
 
     var exif = document.getElementById("exif");
-    exif.style.display = "none";
+    exif.style.opacity = "0";
 }

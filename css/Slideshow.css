@@ -132,7 +132,7 @@ img.demo {
 }
 
 #openCloseExif {
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
     display: inline-block;
     cursor: pointer;
     width: auto;
@@ -147,5 +147,6 @@ img.demo {
 }
 
 #exif {
-    display: none;
+    opacity: 1;
+    transition: visibility 0.3s linear, opacity 0.3s linear;
 }
