@@ -64,6 +64,12 @@ function keyboardHandling(event) {
         case "ArrowRight":
             plusSlides(1);
             break;
+        case "ArrowDown":
+            openExifBlock();
+            break;
+        case "ArrowUp":
+            closeExifBlock();
+            break;
         case "Escape":
             closeModal();
             break;
