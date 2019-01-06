@@ -151,11 +151,13 @@ class Gallery
     {
         $str = "<div id=\"myModal\" class=\"modal\">";
         $str .= "<span class=\"close cursor\" onclick=\"closeModal()\">&times;</span>";
+
+        $str .= $this->getSlideshowCaptionHTML($images);
+
         $str .= "<div class=\"modal-content\">";
 
         $str .= $this->getSlideshowFullImagesHTML($images);
         $str .= $this->getSlideshowControlsHTML();
-        $str .= $this->getSlideshowCaptionHTML($images);
         $str .= $this->getThumbnailsForSlideShowHTML($images);
         $str .= $this->getSlideshowImagesMetaHTML($images);
 
@@ -189,7 +191,7 @@ class Gallery
     // @todo consider reading these with javascript once the image is loaded instead
     private function getSlideshowCaptionHTML(array $images): string
     {
-        $str = "<div class=\"caption-container\">";
+        $str = "<div id=\"captionContainer\">";
         $str .= "<h2 id='exifHeading'>Exif Data</h2>";
         $str .= "<a id=\"openCloseExif\" onclick=\"openExifBlock()\">&#10094;</a>";
         $str .= "<div id='exif'>";
