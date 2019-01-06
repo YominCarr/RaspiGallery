@@ -16,7 +16,6 @@ class Gallery
         $this->thumbnailManager = $thumbnailManager;
     }
 
-// @todo Add links to images / folders
     public function getFoldersAndImagesGalleryHTML(array $content): string
     {
         $str = "<div class='galleryWrapper'>";
@@ -172,13 +171,22 @@ class Gallery
 
         for ($i = 0, $nr = 1; $i < Config::numberImagesPerRow && $i < $countImages; ++$i, ++$nr) {
             $image = $images[$i];
+            $imageHTML = $image->getDisplayHTML($this->fileManager, "slideshowimage", "slideshowimage$i");;
 
             $str .= "<div class='mySlides' id='mySlide$i'>";
             $str .= "<div class='numbertext' id='numbertext$i'>$nr / $countImages</div>";
-            $str .= $image->getDisplayHTML($this->fileManager, "slideshowimage", "slideshowimage$i");
+            $str .= $this->createFullImageLinkAroundImage($image, $imageHTML, $i);
             $str .= "</div>";
         }
         return $str;
+    }
+
+    private function createFullImageLinkAroundImage($image, $imageHTML, $i)
+    {
+        $link = $image->getRelativePathAsUrl($this->fileManager);
+        $id = "fullImageLink$i";
+
+        return "<a href='$link' id='$id' target='_blank'>" . $imageHTML . "</a>";
     }
 
     private function getSlideshowControlsHTML(): string
