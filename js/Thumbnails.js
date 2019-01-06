@@ -1,12 +1,12 @@
 var thumbnailRequests = [];
 var currentRequests = [];
 // @todo make max configurable
-var maxRequests = 6; // Typically get 2 requests per thumbnail because of main page and slideshow
+var maxRequests = 6; // Typically get 2-3 requests per thumbnail because of main page, slideshow and meta elements
 
 thumbnailEventLoop(); // Start the thumbnail creation event loop as soon as the page is done loading
 
-// @todo Issue: thumbnails in slideshow which are not displayed from the beginning lack a request!
-
+// @todo Issue: What if two people want to generate the same thumbnail at the same time?
+// @todo What about server load - in case many people visit the page a lot of requests are issued at the same time
 function thumbnailEventLoop() {
     extractRequestsFromDom();
 
@@ -29,7 +29,12 @@ function extractRequestsFromDom() {
 
         var name = requestContainer.getElementsByClassName("name")[0].innerHTML;
         var path = requestContainer.getElementsByClassName("path")[0].innerHTML;
-        var imageIdSelector = requestContainer.getElementsByClassName("imageIdSelector")[0].innerHTML;
+
+        var imageIdSelector = "";
+        var imageIdSelectorContainers = requestContainer.getElementsByClassName("imageIdSelector");
+        if (imageIdSelectorContainers.length > 0) {
+            imageIdSelector = imageIdSelectorContainers[0].innerHTML;
+        }
 
         var contentIdSelector = "";
         var contentIdSelectorContainers = requestContainer.getElementsByClassName("contentIdSelector");
@@ -101,16 +106,24 @@ function replaceImageSourcesAndRemoveRequest(json) {
     var contentIdSelector = data.contentIdSelector;
     var src = data.src;
 
-    document.getElementById(imageIdSelector).src = src;
+    if (imageIdSelector != "") {
+        document.getElementById(imageIdSelector).src = src;
+        removeRequestUsingImageIdSelector(imageIdSelector);
+    }
     if (contentIdSelector != "") {
         document.getElementById(contentIdSelector).innerHTML = src;
+        removeRequestUsingContentIdSelector(contentIdSelector);
     }
-
-    removeRequest(imageIdSelector);
 }
 
-function removeRequest(imageIdSelector) {
+function removeRequestUsingImageIdSelector(imageIdSelector) {
     currentRequests = currentRequests.filter(function (request) {
         return request.imageIdSelector != imageIdSelector;
+    });
+}
+
+function removeRequestUsingContentIdSelector(contentIdSelector) {
+    currentRequests = currentRequests.filter(function (request) {
+        return request.contentIdSelector != contentIdSelector;
     });
 }

@@ -12,7 +12,7 @@ class ThumbnailCreationRequest
     public $imageIdSelector = "";
     public $contentIdSelector = "";
 
-    public function __construct(string $name, string $path, string $imageIdSelector, string $contentIdSelector = "")
+    public function __construct(string $name, string $path, string $imageIdSelector = "", string $contentIdSelector = "")
     {
         $this->name = $name;
         $this->path = $path;
@@ -23,7 +23,6 @@ class ThumbnailCreationRequest
 }
 
 // @todo Need a mechanism to remove old thumbnails from disk, maybe offer a file for cron and also for periodic calling
-// @todo Thumbnails should be generated asynchronously and dummy images should be in place and periodicly be replaced then
 class ThumbnailManager
 {
 
@@ -117,12 +116,11 @@ class ThumbnailManager
         return $thumbnail;
     }
 
-    public function addThumbnailCreationRequestToBuffer(string $name, string $fullPath, string $imageIdSelector, string $contentIdSelector = "")
+    public function addThumbnailCreationRequestToBuffer(string $name, string $fullPath, string $imageIdSelector = "", string $contentIdSelector = "")
     {
         $this->thumbnailRequestBuffer[] = new ThumbnailCreationRequest($name, $fullPath, $imageIdSelector, $contentIdSelector);
     }
 
-    // @todo take care the generation events from normal page and slideshow don't interact -> js
     public function getThumbnailRequestHTML(): string
     {
         $html = "<div id='thumbnailCreationRequests'>";
@@ -131,7 +129,9 @@ class ThumbnailManager
             $html .= "<div class='request'>";
             $html .= "<div class='name'>" . $request->name .= "</div>";
             $html .= "<div class='path'>" . $request->path .= "</div>";
-            $html .= "<div class='imageIdSelector'>" . $request->imageIdSelector .= "</div>";
+            if (!empty($request->imageIdSelector)) {
+                $html .= "<div class='imageIdSelector'>" . $request->imageIdSelector .= "</div>";
+            }
             if (!empty($request->contentIdSelector)) {
                 $html .= "<div class='contentIdSelector'>" . $request->contentIdSelector .= "</div>";
             }

@@ -228,13 +228,12 @@ class Gallery
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
             $id = "demo$i";
-            $metaId = "image" . $i . "Meta_thumbSrc";
 
             $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "demo", $id);
 
             if ($thumbnail->isDummy()) {
-                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id, $metaId);
+                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
             }
 
             $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>" . $thumbnailHTML . "</div>";
@@ -252,7 +251,13 @@ class Gallery
 
         for ($i = 0; $i < $countImages; ++$i) {
             $image = $images[$i];
+            $thumbnailSrcId = "image" . $i . "Meta_thumbSrc";
+
             $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
+
+            if ($thumbnail->isDummy()) {
+                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), "", $thumbnailSrcId);
+            }
 
             $src = $image->getRelativePathAsUrl($this->fileManager);
             $alt = $image->getName();
@@ -263,7 +268,7 @@ class Gallery
             $str .= "<div id='image" . $i . "Meta_src'>" . $src . "</div>";
             $str .= "<div id='image" . $i . "Meta_alt'>" . $alt . "</div>";
             $str .= "<div id='image" . $i . "Meta_caption'>" . $caption . "</div>";
-            $str .= "<div id='image" . $i . "Meta_thumbSrc'>" . $thumbSrc . "</div>";
+            $str .= "<div id='$thumbnailSrcId'>" . $thumbSrc . "</div>";
             $str .= "</div>";
         }
         $str .= "</div>";
