@@ -9,12 +9,15 @@ class ThumbnailCreationRequest
 
     public $name = "";
     public $path = "";
-    public $idSelector = "";
+    public $imageIdSelector = "";
+    public $contentIdSelector = "";
 
-    public function __construct(string $name, string $path, string $idSelector) {
+    public function __construct(string $name, string $path, string $imageIdSelector, string $contentIdSelector = "")
+    {
         $this->name = $name;
         $this->path = $path;
-        $this->idSelector = $idSelector;
+        $this->imageIdSelector = $imageIdSelector;
+        $this->contentIdSelector = $contentIdSelector;
     }
 
 }
@@ -114,9 +117,9 @@ class ThumbnailManager
         return $thumbnail;
     }
 
-    public function addThumbnailCreationRequestToBuffer(string $name, string $fullPath, string $idSelector)
+    public function addThumbnailCreationRequestToBuffer(string $name, string $fullPath, string $imageIdSelector, string $contentIdSelector = "")
     {
-        $this->thumbnailRequestBuffer[] = new ThumbnailCreationRequest($name, $fullPath, $idSelector);
+        $this->thumbnailRequestBuffer[] = new ThumbnailCreationRequest($name, $fullPath, $imageIdSelector, $contentIdSelector);
     }
 
     // @todo take care the generation events from normal page and slideshow don't interact -> js
@@ -128,7 +131,10 @@ class ThumbnailManager
             $html .= "<div class='request'>";
             $html .= "<div class='name'>" . $request->name .= "</div>";
             $html .= "<div class='path'>" . $request->path .= "</div>";
-            $html .= "<div class='idSelector'>" . $request->idSelector .= "</div>";
+            $html .= "<div class='imageIdSelector'>" . $request->imageIdSelector .= "</div>";
+            if (!empty($request->contentIdSelector)) {
+                $html .= "<div class='contentIdSelector'>" . $request->contentIdSelector .= "</div>";
+            }
             $html .= "</div>";
         }
 

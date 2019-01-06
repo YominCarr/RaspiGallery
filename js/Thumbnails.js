@@ -3,8 +3,6 @@ var currentRequests = [];
 // @todo make max configurable
 var maxRequests = 6; // Typically get 2 requests per thumbnail because of main page and slideshow
 
-// @todo currently have dummy also in meta elements -> need to replace these too!
-
 thumbnailEventLoop(); // Start the thumbnail creation event loop as soon as the page is done loading
 
 // @todo Issue: thumbnails in slideshow which are not displayed from the beginning lack a request!
@@ -31,9 +29,20 @@ function extractRequestsFromDom() {
 
         var name = requestContainer.getElementsByClassName("name")[0].innerHTML;
         var path = requestContainer.getElementsByClassName("path")[0].innerHTML;
-        var idSelector = requestContainer.getElementsByClassName("idSelector")[0].innerHTML;
+        var imageIdSelector = requestContainer.getElementsByClassName("imageIdSelector")[0].innerHTML;
 
-        thumbnailRequests.push({"name": name, "path": path, "idSelector": idSelector});
+        var contentIdSelector = "";
+        var contentIdSelectorContainers = requestContainer.getElementsByClassName("contentIdSelector");
+        if (contentIdSelectorContainers.length > 0) {
+            contentIdSelector = contentIdSelectorContainers[0].innerHTML;
+        }
+
+        thumbnailRequests.push({
+            "name": name,
+            "path": path,
+            "imageIdSelector": imageIdSelector,
+            "contentIdSelector": contentIdSelector
+        });
         hostContainer.removeChild(requestContainer);
     }
 }
@@ -88,15 +97,20 @@ function postAjaxRequest(url, data, successCallback) {
 function replaceImageSourcesAndRemoveRequest(json) {
     var data = JSON.parse(json);
 
-    var idSelector = data.idSelector;
+    var imageIdSelector = data.imageIdSelector;
+    var contentIdSelector = data.contentIdSelector;
     var src = data.src;
 
-    document.getElementById(idSelector).src = src;
-    removeRequest(idSelector);
+    document.getElementById(imageIdSelector).src = src;
+    if (contentIdSelector != "") {
+        document.getElementById(contentIdSelector).innerHTML = src;
+    }
+
+    removeRequest(imageIdSelector);
 }
 
-function removeRequest(idSelector) {
+function removeRequest(imageIdSelector) {
     currentRequests = currentRequests.filter(function (request) {
-        return request.idSelector != idSelector;
+        return request.imageIdSelector != imageIdSelector;
     });
 }

@@ -228,12 +228,13 @@ class Gallery
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
             $id = "demo$i";
+            $metaId = "image" . $i . "Meta_thumbSrc";
 
             $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "demo", $id);
 
             if ($thumbnail->isDummy()) {
-                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
+                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id, $metaId);
             }
 
             $str .= "<div class=\"thumbnailColumn\" onclick='currentSlide($i)'>" . $thumbnailHTML . "</div>";
