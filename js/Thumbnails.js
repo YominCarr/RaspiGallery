@@ -9,8 +9,6 @@ thumbnailEventLoop(); // Start the thumbnail creation event loop as soon as the 
 
 // @todo Issue: thumbnails in slideshow which are not displayed from the beginning lack a request!
 
-// @todo debug order of thumbnails, seems to be alternating instead of sequential
-
 function thumbnailEventLoop() {
     extractRequestsFromDom();
 
@@ -28,8 +26,8 @@ function extractRequestsFromDom() {
     var hostContainer = document.getElementById("thumbnailCreationRequests");
     var requestContainers = hostContainer.getElementsByClassName("request");
 
-    for (var i = 0; i < requestContainers.length; ++i) {
-        var requestContainer = requestContainers[i];
+    while (requestContainers.length > 0) {
+        var requestContainer = requestContainers[0];
 
         var name = requestContainer.getElementsByClassName("name")[0].innerHTML;
         var path = requestContainer.getElementsByClassName("path")[0].innerHTML;
@@ -45,11 +43,11 @@ function issueNewRequests() {
         var request = thumbnailRequests.shift();
 
         if (similarRequestInProgress(request)) {
-            // This thumbnail is already in generation, requeue this one at the end
+            // This thumbnail is already in generation, requeue this one at the end; May happen due to slideshow
+            // But should happen very rarely (only if the total number of thumbnails is very small)
             thumbnailRequests.push(request);
         } else {
             // Actually carry out that request
-            currentRequests.push(request);
             postAjaxRequest("generateThumbnail.php", request, replaceImageSourcesAndRemoveRequest);
         }
     }
