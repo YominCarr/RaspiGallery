@@ -74,6 +74,7 @@ function keyboardHandling(event) {
             closeModal();
             break;
     }
+    event.preventDefault();
 }
 
 function hideSlideshowElement(slides, captions, thumbnails) {
