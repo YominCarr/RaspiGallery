@@ -96,6 +96,8 @@ class ThumbnailManager
         if ($type == IMAGETYPE_GIF || $type == IMAGETYPE_PNG) {
             $white = imagecolorallocate($thumbImage, 255, 255, 255);
             imagefill($thumbImage, 0, 0, $white);
+            
+            imagedestroy($white);
         }
 
         if (Config::thumbnailResampleInsteadResize) {
