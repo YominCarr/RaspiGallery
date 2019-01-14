@@ -29,34 +29,33 @@ class ImageSorter extends FileSystemEntitySorter
         $this->appendSortingDirectionToSorter();
     }
 
-    private function sortByCreationDateAsc(Image $a, Image $b)
+    protected function sortByCreationDateAsc(Image $a, Image $b)
     {
         return $a->getCreationDate() < $b->getCreationDate();
     }
 
-    private function sortByCreationDateDesc(Image $a, Image $b)
+    protected function sortByCreationDateDesc(Image $a, Image $b)
     {
         return $a->getCreationDate() > $b->getCreationDate();
     }
 
-    private function sortByModificationDateAsc(Image $a, Image $b)
+    protected function sortByModificationDateAsc(Image $a, Image $b)
     {
         return $a->getModificationDate() < $b->getModificationDate();
     }
 
-    private function sortByModificationDateDesc(Image $a, Image $b)
+    protected function sortByModificationDateDesc(Image $a, Image $b)
     {
         return $a->getModificationDate() > $b->getModificationDate();
     }
 
-    // @todo get exif info and implement these two
-    private function sortByShotDateAsc(Image $a, Image $b)
+    protected function sortByShotDateAsc(Image $a, Image $b)
     {
-        return 0;
+        return $a->getExifData()->dateTaken < $b->getExifData()->dateTaken;
     }
 
-    private function sortByShotDateDesc(Image $a, Image $b)
+    protected function sortByShotDateDesc(Image $a, Image $b)
     {
-        return 0;
+        return $a->getExifData()->dateTaken > $b->getExifData()->dateTaken;
     }
 }
