@@ -66,8 +66,7 @@ class ThumbnailManager
 
     private function createThumbnail(FileManager $fileManager, Image $image): Image
     {
-        // @todo do we need that?
-        //ini_set('memory_limit', '96M');
+        ini_set('memory_limit', '96M');
 
         $pathToImage = $image->getFullPath();
         $width = $image->getWidth();
