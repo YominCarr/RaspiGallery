@@ -88,7 +88,7 @@ function postAjaxRequest(url, data, successCallback) {
     xhr.open('POST', url);
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
-            successCallback(xhr.responseText);
+            successCallback(data, xhr.responseText);
         }
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -98,24 +98,31 @@ function postAjaxRequest(url, data, successCallback) {
     return xhr;
 }
 
-function replaceImageSourcesAndRemoveRequest(json) {
-    var data = JSON.parse(json);
+function replaceImageSourcesAndRemoveRequest(request, json) {
+    try {
+        var data = JSON.parse(json);
 
-    var imageIdSelector = data.imageIdSelector;
-    var contentIdSelector = data.contentIdSelector;
-    var src = data.src;
+        var imageIdSelector = data.imageIdSelector;
+        var contentIdSelector = data.contentIdSelector;
+        var src = data.src;
 
-    if (imageIdSelector != "") {
-        document.getElementById(imageIdSelector).src = src;
-        removeRequestUsingImageIdSelector(imageIdSelector);
-    }
-    if (contentIdSelector != "") {
-        document.getElementById(contentIdSelector).innerHTML = src;
-        removeRequestUsingContentIdSelector(contentIdSelector);
+        if (imageIdSelector != "") {
+            document.getElementById(imageIdSelector).src = src;
+            removeRequestUsingImageIdSelector(imageIdSelector);
+        }
+        if (contentIdSelector != "") {
+            document.getElementById(contentIdSelector).innerHTML = src;
+            removeRequestUsingContentIdSelector(contentIdSelector);
+        }
+    } catch (e) {
+        console.log(e);
+        console.log(json);
+
+        postAjaxRequest("generateThumbnail.php", request, replaceImageSourcesAndRemoveRequest);
     }
 
     if (currentRequests.length == 0) {
-        setTimeout(thumbnailEventLoop, 3000); // Start again after 3 seconds; Less time does n0ot give the browser enough update time
+        setTimeout(thumbnailEventLoop, 1000); // Start again after 1 second; Less time does n0ot give the browser enough update time
     }
 }
 
