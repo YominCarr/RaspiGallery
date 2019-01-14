@@ -16,8 +16,6 @@ function thumbnailEventLoop() {
     }
 
     issueNewRequests();
-
-    setTimeout(thumbnailEventLoop, 3000); // Start again after 3 seconds; Less time does not allow proper browser updates
 }
 
 function extractRequestsFromDom() {
@@ -113,6 +111,10 @@ function replaceImageSourcesAndRemoveRequest(json) {
     if (contentIdSelector != "") {
         document.getElementById(contentIdSelector).innerHTML = src;
         removeRequestUsingContentIdSelector(contentIdSelector);
+    }
+
+    if (currentRequests.length == 0) {
+        setTimeout(thumbnailEventLoop, 3000); // Start again after 3 seconds; Less time does n0ot give the browser enough update time
     }
 }
 
