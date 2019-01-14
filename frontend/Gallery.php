@@ -196,7 +196,6 @@ class Gallery
         return $str;
     }
 
-    // @todo consider reading these with javascript once the image is loaded instead
     private function getSlideshowCaptionHTML(array $images): string
     {
         $str = "<div id=\"captionContainer\">";

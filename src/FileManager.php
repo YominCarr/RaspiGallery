@@ -16,7 +16,6 @@ class FileManager
         $this->imageSorter = new ImageSorter();
     }
 
-    // @todo give options for sorting
     public function scanDirRecursively(string $path): array
     {
         if (!is_dir($path)) {
