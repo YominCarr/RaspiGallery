@@ -17,7 +17,7 @@ class Image extends FileSystemEntity
     private $dummy = false;
 
     public function __construct(string $name, string $fullPath, int $type, string $width, string $height,
-                                string $creationDate, string $modificationDate, ExifData $exifData)
+                                int $creationDate, int $modificationDate, ExifData $exifData)
     {
         parent::__construct($name, $fullPath);
         $this->type = $type;
@@ -43,12 +43,12 @@ class Image extends FileSystemEntity
         return $this->height;
     }
 
-    public function getCreationDate(): string
+    public function getCreationDate(): int
     {
         return $this->creationDate;
     }
 
-    public function getModificationDate(): string
+    public function getModificationDate(): int
     {
         return $this->modificationDate;
     }
