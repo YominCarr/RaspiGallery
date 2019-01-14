@@ -38,7 +38,7 @@ class FileManager
                     array_push($folders, new Folder($value, $contentPath, $content));
                 } else {
                     $image = Image::createImage($value, $contentPath);
-                    if ($image != NULL) {
+                    if ($image->isValidImage()) {
                         array_push($images, $image);
                     }
                 }

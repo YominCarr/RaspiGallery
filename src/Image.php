@@ -63,6 +63,11 @@ class Image extends FileSystemEntity
         return $this->dummy;
     }
 
+    public function isValidImage(): bool
+    {
+        return true;
+    }
+
     public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = ""): string
     {
         $src = $this->getRelativePathAsUrl($fileManager);
@@ -79,7 +84,7 @@ class Image extends FileSystemEntity
     {
         list($width, $height, $type, $attr) = getimagesize($filePath, $info);
         if ($type != IMAGETYPE_JPEG && $type != IMAGETYPE_PNG && $type != IMAGETYPE_GIF) {
-            return NULL;
+            return new InvalidImage($name, $filePath, $type == NULL ? -1 : $type);
         }
         $creationDate = filectime($filePath);
         $modificationDate = filemtime($filePath);
@@ -98,6 +103,21 @@ class Image extends FileSystemEntity
 
         return $image;
     }
+}
+
+class InvalidImage extends Image
+{
+
+    public function __construct(string $name, string $fullPath, int $type)
+    {
+        parent::__construct($name, $fullPath, $type, "0","0", "0", "0", new ExifData());
+    }
+
+    public function isValidImage(): bool
+    {
+        return false;
+    }
+
 }
 
 // @todo how to make that private?

@@ -15,7 +15,9 @@ $thumbnailManager = new ThumbnailManager();
 
 $image = Image::createImage($imgName, $imgPath);
 
-$thumbnail = $thumbnailManager->generateThumbnailIfNeeded($fileManager, $image);
-$thumbnailUrl = $thumbnail->getRelativePathAsUrl($fileManager);
+if ($image->isValidImage()) {
+    $thumbnail = $thumbnailManager->generateThumbnailIfNeeded($fileManager, $image);
+    $thumbnailUrl = $thumbnail->getRelativePathAsUrl($fileManager);
 
-echo json_encode(["imageIdSelector" => $imageIdSelector, "contentIdSelector" => $contentIdSelector, "src" => $thumbnailUrl]);
+    echo json_encode(["imageIdSelector" => $imageIdSelector, "contentIdSelector" => $contentIdSelector, "src" => $thumbnailUrl]);
+}
