@@ -7,9 +7,9 @@ class FolderThumbnail {
 
 class SortingMethod {
     const fileName = 0;
-    const fileCreationDate = 0;
-    const fileModificationDate = 1;
-    const photoShotDate = 2;
+    const fileCreationDate = 1;
+    const fileModificationDate = 2;
+    const photoShotDate = 3;
 }
 
 class SortingOrder {
