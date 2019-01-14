@@ -1,7 +1,7 @@
 var thumbnailRequests = [];
 var currentRequests = [];
 // @todo make max configurable
-var maxRequests = 6; // Typically get 2-3 requests per thumbnail because of main page, slideshow and meta elements
+var maxRequests = 4; // Typically get 2-3 requests per thumbnail because of main page, slideshow and meta elements
 
 thumbnailEventLoop(); // Start the thumbnail creation event loop as soon as the page is done loading
 
@@ -11,13 +11,13 @@ function thumbnailEventLoop() {
     extractRequestsFromDom();
 
     if (thumbnailRequests.length == 0) {
-        setTimeout(thumbnailEventLoop, 5000); // Nothing to do, check again after 5 second
+        setTimeout(thumbnailEventLoop, 5000); // Nothing to do, check again after 5 seconds
         return;
     }
 
     issueNewRequests();
 
-    setTimeout(thumbnailEventLoop, 1000); // Start again after 1 second
+    setTimeout(thumbnailEventLoop, 3000); // Start again after 3 seconds; Less time does not allow proper browser updates
 }
 
 function extractRequestsFromDom() {
