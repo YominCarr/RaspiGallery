@@ -209,7 +209,6 @@ class Gallery
             $str .= "<p id=\"caption$i\" class='caption'>";
             $str .= $this->getSlideshowCaption($image);
             $str .= "</p>";
-
         }
         $str .= "</div></div>";
         return $str;
@@ -219,6 +218,7 @@ class Gallery
     {
         $exifData = $image->getExifData();
         $exifDataArray = ["Name" => $image->getName(),
+            "Image Size" => $image->getWidth() . " x " . $image->getHeight() . " Pixels",
             "Camera Modell" => $exifData->camera,
             "Sensitivity" => $exifData->iso,
             "Shutter Speed" => $exifData->shutter,
