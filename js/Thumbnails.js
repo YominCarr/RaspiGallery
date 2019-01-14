@@ -60,6 +60,7 @@ function issueNewRequests() {
             thumbnailRequests.push(request);
         } else {
             // Actually carry out that request
+            currentRequests.push(request);
             postAjaxRequest("generateThumbnail.php", request, replaceImageSourcesAndRemoveRequest);
         }
     }
