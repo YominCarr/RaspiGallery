@@ -34,7 +34,7 @@ class Config
 
     const numberImagesPerRow = 4;
 
-    const imageSortingKey = SortingMethod::fileName;
+    const imageSortingKey = SortingMethod::photoShotDate;
     const imageSortingOrder = SortingOrder::descending;
 
     // Folders always sort by name
