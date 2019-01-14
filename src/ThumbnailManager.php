@@ -30,7 +30,7 @@ class ThumbnailManager
 
     public function getThumbnailOrDummy(FileManager $fileManager, Image $image): Image
     {
-        if ($this->thumbnailExists($image)) {
+        if ($this->thumbnailExistsAndIsUpToDate($image)) {
             $thumbnailPath = $this->getThumbnailPathForImage($image);
             $thumbnail = Image::createImage($image->getName(), $thumbnailPath);
             return $thumbnail;
@@ -41,7 +41,7 @@ class ThumbnailManager
 
     public function generateThumbnailIfNeeded(FileManager $fileManager, Image $image): Image
     {
-        if (!$this->thumbnailExists($image)) {
+        if (!$this->thumbnailExistsAndIsUpToDate($image)) {
             return $this->createThumbnail($fileManager, $image);
         }
 
@@ -57,11 +57,24 @@ class ThumbnailManager
         return $path;
     }
 
-    // @todo Add some checking that found thumbnail has the correct size, otherwise delete and redo perhaps
-    // @todo Also what if the image has changed? Compare date of image and thumbnail, if image is newer redo
-    private function thumbnailExists(Image $image): bool
+    private function thumbnailExistsAndIsUpToDate(Image $image): bool
     {
-        return file_exists($this->getThumbnailPathForImage($image));
+        $thumbnailPath = $this->getThumbnailPathForImage($image);
+        if (!file_exists($thumbnailPath)) {
+            return false;
+        }
+
+        $thumbnail = Image::createImage($image->getName(), $thumbnailPath);
+        if ($image->getModificationDate() > $thumbnail->getModificationDate()) {
+            return false;
+        }
+
+        if ($thumbnail->getWidth() < 0.95 * Config::thumbnailMaxWidth &&       //0.95 buffer because of floating point
+            $thumbnail->getHeight() < 0.95 * Config::thumbnailMaxHeight) {
+            return false;
+        }
+
+        return true;
     }
 
     private function createThumbnail(FileManager $fileManager, Image $image): Image
@@ -96,7 +109,7 @@ class ThumbnailManager
         if ($type == IMAGETYPE_GIF || $type == IMAGETYPE_PNG) {
             $white = imagecolorallocate($thumbImage, 255, 255, 255);
             imagefill($thumbImage, 0, 0, $white);
-            
+
             imagedestroy($white);
         }
 
