@@ -60,21 +60,25 @@ function keyboardHandling(event) {
     switch (event.code) {
         case "ArrowLeft":
             plusSlides(-1);
+            event.preventDefault();
             break;
         case "ArrowRight":
             plusSlides(1);
+            event.preventDefault();
             break;
         case "ArrowDown":
             openExifBlock();
+            event.preventDefault();
             break;
         case "ArrowUp":
             closeExifBlock();
+            event.preventDefault();
             break;
         case "Escape":
             closeModal();
+            event.preventDefault();
             break;
     }
-    event.preventDefault();
 }
 
 function hideSlideshowElement(slides, captions, thumbnails) {
