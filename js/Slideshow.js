@@ -137,12 +137,14 @@ function displayImageInSlideContainer(imageId, containerId) {
     var fullImageContainer = document.getElementById("slideshowimage" + containerId);
     var captionContainer = document.getElementById("caption" + containerId);
     var thumbnailContainer = document.getElementById("demo" + containerId);
+    var thumbnailContainerParent = thumbnailContainer.parentElement;
     var fullImageLinkContainer = document.getElementById("fullImageLink" + containerId);
 
     changeNumberTextOverlay(numbertextContainer, imageId, countImages);
     changeImageSourceAndAlt(fullImageContainer, src, alt);
     changeElementContent(captionContainer, caption);
     changeImageSource(thumbnailContainer, thumbSrc);
+    changeOnClickCurrentSlide(thumbnailContainerParent, imageId);
     changeLinkHref(fullImageLinkContainer, src);
 }
 
@@ -161,6 +163,12 @@ function changeImageSourceAndAlt(element, src, alt) {
 
 function changeImageSource(element, src) {
     element.src = src;
+}
+
+function changeOnClickCurrentSlide(element, number) {
+    element.onclick = function () {
+        currentSlide(number)
+    };
 }
 
 function changeLinkHref(element, href) {
