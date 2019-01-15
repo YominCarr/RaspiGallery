@@ -9,25 +9,16 @@ $imageNames = json_decode($imageNames);
 $imagePaths = json_decode($imagePaths);
 
 // @todo destination configurable
-$zipFileManager = new ZipFileManager();
-$zipFileManager->createZip($imageNames, $imagePaths, 'photos.zip');
+$name = 'photos.zip';
+$destination = 'photos.zip';
 
-if (file_exists('photos.zip')) {
-    //Set Headers:
-    header('Pragma: public');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime('photos.zip')) . ' GMT');
-    header('Content-Type: application/force-download');
-    header('Content-Disposition: inline; filename="photos.zip"');
-    header('Content-Transfer-Encoding: binary');
-    header('Content-Length: ' . filesize('photos.zip'));
-    header('Connection: close');
-    readfile('photos.zip');
-    exit();
-}
+$zipFileManager = new ZipFileManager();
+$zipFileManager->createZip($imageNames, $imagePaths, $destination);
+
+echo json_encode(["name" => $name, "path" => $destination]);
+
 
 // @todo also need mechanism to remove old files
-if (file_exists('photos.zip')) {
+/*if (file_exists('photos.zip')) {
     unlink('photos.zip');
-}
+}*/

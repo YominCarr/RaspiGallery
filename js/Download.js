@@ -8,7 +8,7 @@ function downloadImages() {
         "imagePaths": JSON.stringify(paths)
     };
 
-    postAjaxRequest("downloadZip.php", data, outputToConsole);
+    postAjaxRequest("downloadZip.php", data, handleDownloadResponse);
 }
 
 function collectFilesForDownload() {
@@ -35,4 +35,28 @@ function getPathsFromFiles(files) {
     }
 
     return paths;
+}
+
+function handleDownloadResponse(data, json) {
+    try {
+        var data = JSON.parse(json);
+
+        var downloadName = data.name;
+        var downloadPath = data.path;
+        navigateToDownload(downloadName, downloadPath);
+    } catch (e) {
+        console.log(e);
+        console.log(json);
+
+        alert("Error occured - Download failed");
+    }
+}
+
+function navigateToDownload(name, path) {
+    var downloadLink = document.createElement('a');
+    downloadLink.href = path;
+    downloadLink.download = name;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 }
