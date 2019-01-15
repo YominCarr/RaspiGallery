@@ -97,7 +97,8 @@ class Gallery
             $id = "imageThumbnail$i";
 
             $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
-            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow", $id);
+            // @todo make images for download selectable and then give them the class downloadMe - not all
+            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow downloadable downloadMe", $id);
 
             if ($thumbnail->isDummy()) {
                 $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);

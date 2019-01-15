@@ -2,8 +2,11 @@
 
 require_once __DIR__ . '/src/ZipFileManager.php';
 
-$imageNames = filter_input(INPUT_POST, 'imageNames', FILTER_SANITIZE_STRING);
-$imagePaths = filter_input(INPUT_POST, 'imagePaths', FILTER_SANITIZE_STRING);
+$imageNames = filter_input(INPUT_POST, 'imageNames');
+$imagePaths = filter_input(INPUT_POST, 'imagePaths');
+
+$imageNames = json_decode($imageNames);
+$imagePaths = json_decode($imagePaths);
 
 // @todo destination configurable
 $zipFileManager = new ZipFileManager();
