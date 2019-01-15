@@ -2,6 +2,15 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    display: inline-block;
+}
+
+#downloadButton {
+    display: inline-block;
+    margin-left: 20px;
+}
+
 .galleryWrapper {
     text-align: center;
 }

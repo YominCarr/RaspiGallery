@@ -3,6 +3,8 @@
     <link rel="stylesheet" type="text/css" href="css/Gallery.css" />
     <link rel='stylesheet' type='text/css' href='css/GalleryComputed.php' />
     <link rel="stylesheet" type="text/css" href="css/Slideshow.css" />
+    <link rel="stylesheet" type="text/css" href="css/Buttons.css" />
+    <script type='text/javascript' src='js/Download.js'></script>
 </head>
 <body>
 

@@ -32,6 +32,7 @@ class Gallery
         }
         if (sizeof($images) > 0) {
             $str .= "<h2>Images</h2>";
+            $str .= "<input type='button' value='Download' onclick='downloadImages()' id='downloadButton' class='button blue' /><br/>";
             $str .= $this->getImageGalleryHTML($images);
 
             $str .= "<script type='text/javascript' src='js/Slideshow.js'></script>";
