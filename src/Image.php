@@ -68,7 +68,8 @@ class Image extends FileSystemEntity
         return true;
     }
 
-    public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = ""): string
+    public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = "",
+                                   array $additionalAttributes = []): string
     {
         $src = $this->getRelativePathAsUrl($fileManager);
 
@@ -76,7 +77,12 @@ class Image extends FileSystemEntity
             $alt = $this->getName();
         }
 
-        $str = "<img src='$src' alt='$alt' class='$classes' id='$id'>";
+        $additional = "";
+        foreach ($additionalAttributes as $key => $val) {
+            $additional .= "$key='$val' ";
+        }
+
+        $str = "<img src='$src' alt='$alt' class='$classes' id='$id' $additional>";
         return $str;
     }
 

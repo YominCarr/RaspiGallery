@@ -31,7 +31,7 @@ function getPathsFromFiles(files) {
 
     for (var i = 0; i < files.length; ++i) {
         var file = files[i];
-        paths.push(file.src)
+        paths.push(file.dataset.path)
     }
 
     return paths;

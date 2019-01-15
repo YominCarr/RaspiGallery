@@ -95,10 +95,11 @@ class Gallery
         for ($i = 0; $i < sizeof($images); ++$i) {
             $image = $images[$i];
             $id = "imageThumbnail$i";
+            $dataAttributes = ["data-path" => $image->getFullPath()];
 
             $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             // @todo make images for download selectable and then give them the class downloadMe - not all
-            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow downloadable downloadMe", $id);
+            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow downloadable downloadMe", $id, "", $dataAttributes);
 
             if ($thumbnail->isDummy()) {
                 $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
