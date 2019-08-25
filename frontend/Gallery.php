@@ -67,25 +67,21 @@ class Gallery
                 }
             }
 
-            if ($image == NULL) {
-                // @todo empty folder image or not scanned deep enough! -> multiple dummy types
+            if (strpos($image->getFullPath(), "img/dummy.png") !== false) {
+                $thumbnail = $image;
             } else {
-                if (strpos($image->getFullPath(), "img/dummy.png") !== false) {
-                    $thumbnail = $image;
-                } else {
-                    $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
-                }
-
-                $id = "folderThumbnail$i";
-                $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow", $id);
-
-                if ($thumbnail->isThumbnaiLCreationDummy()) {
-                    $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
-                }
-
-                $folderPath = $this->fileManager->trimTrailingDirSeparator($folder->getRelativePathToPhotoDir($this->fileManager));
-                $thumbnailHTMLs[] = $this->createFolderLinkAroundImage($folderPath, $thumbnailHTML);
+                $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             }
+
+            $id = "folderThumbnail$i";
+            $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow", $id);
+
+            if ($thumbnail->isThumbnaiLCreationDummy()) {
+                $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
+            }
+
+            $folderPath = $this->fileManager->trimTrailingDirSeparator($folder->getRelativePathToPhotoDir($this->fileManager));
+            $thumbnailHTMLs[] = $this->createFolderLinkAroundImage($folderPath, $thumbnailHTML);
         }
 
         return $this->getGalleryHTML($thumbnailHTMLs);
