@@ -16,42 +16,6 @@ class FileManager
         $this->imageSorter = new ImageSorter();
     }
 
-    public function scanDirRecursively(string $path): array
-    {
-        if (!is_dir($path)) {
-            throw new \Exception('No such directory: ' . $path);
-        }
-
-        $folders = array();
-        $images = array();
-        $handle = opendir($path);
-
-        while (false !== ($value = readdir($handle))) {
-            if ($value != "." && $value != "..") {
-                $contentPath = $this->concatPaths($path, $value);
-
-                if (is_dir($contentPath) == true) {
-                    $contentPath .= DIRECTORY_SEPARATOR;
-                    $content = $this->scanDirRecursively($contentPath);
-
-                    array_push($folders, new Folder($value, $contentPath, $content));
-                } else {
-                    $image = Image::createImage($value, $contentPath);
-                    if ($image->isValidImage()) {
-                        array_push($images, $image);
-                    }
-                }
-            }
-        }
-
-        closedir($handle);
-
-        $this->sortFolders($folders);
-        $this->sortImages($images);
-
-        return array("folders" => $folders, "images" => $images);
-    }
-
     public function scanDir(string $path): array
     {
         if (!is_dir($path)) {
@@ -62,6 +26,36 @@ class FileManager
         $images = $this->getImagesList($path);
 
         return array("folders" => $folders, "images" => $images);
+    }
+
+    public function scanDirDepthOne(string $path): array
+    {
+        if (!is_dir($path)) {
+            throw new \Exception('No such directory: ' . $path);
+        }
+        error_log($path);
+        $content = $this->scanDir($path);
+
+        foreach ($content["folders"] as $folder) {
+            $folder->setContentIfEmpty($this->scanDir($folder->getFullPath($this)));
+        }
+
+        return $content;
+    }
+
+    public function scanDirRecursively(string $path): array
+    {
+        if (!is_dir($path)) {
+            throw new \Exception('No such directory: ' . $path);
+        }
+
+        $content = $this->scanDir($path);
+
+        foreach ($content["folders"] as $folder) {
+            $folder->setContentIfEmpty($this->scanDirRecursively($folder->getFullPath($this)));
+        }
+
+        return $content;
     }
 
     public function getShallowSubfolderList(string $path): array

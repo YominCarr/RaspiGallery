@@ -17,11 +17,16 @@ class SortingOrder {
     const descending = 1;
 }
 
+class ScanMethod {
+    const topLevel = 0;
+    const depthOne = 1;
+    const recursive = 2;
+}
+
 class Config
 {
     const documentRoot = "RaspiGallery";
-//    const photoDir = "sampleData";
-    const photoDir = "fotos-ssd";
+    const photoDir = "sampleData";
     const thumbnailDir = "thumbnails";
 
     const thumbnailMaxWidth = 300;
@@ -40,6 +45,8 @@ class Config
 
     // Folders always sort by name
     const folderSortingOrder = SortingOrder::descending;
+
+    const scanMethod = ScanMethod::recursive;
 
     // @todo actually use something like this
     // [['folder' => '', 'password' => ''], [...], ...]

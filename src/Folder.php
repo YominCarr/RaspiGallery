@@ -25,6 +25,13 @@ class Folder extends FileSystemEntity
         return $this->content;
     }
 
+    public function setContentIfEmpty($content)
+    {
+        if($this->content == NULL || sizeof($this->content) == 0) {
+            $this->content = $content;
+        }
+    }
+
     public function hasImages(): bool
     {
         return array_key_exists("images", $this->content) && sizeof($this->content["images"]) > 0;
