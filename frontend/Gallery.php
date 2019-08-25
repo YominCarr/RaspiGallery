@@ -53,14 +53,17 @@ class Gallery
         for ($i = 0; $i < sizeof($folders); ++$i) {
             $folder = $folders[$i];
 
-            if (Config::folderThumbnailDisplay == FolderThumbnail::first) {
-                $image = $folder->getFirstImage($this->fileManager);
-            } else if (Config::folderThumbnailDisplay == FolderThumbnail::random) {
-                $image = $folder->getRandomImage($this->fileManager);
+            $image = Image::getDummyImage($this->fileManager);
+            if ($folder->hasImages()) {
+                if (Config::folderThumbnailDisplay == FolderThumbnail::first) {
+                    $image = $folder->getFirstImage($this->fileManager);
+                } else if (Config::folderThumbnailDisplay == FolderThumbnail::random) {
+                    $image = $folder->getRandomImage($this->fileManager);
+                }
             }
 
             if ($image == NULL) {
-                // @todo empty folder image! -> multiple dummy types
+                // @todo empty folder image or not scanned deep enough! -> multiple dummy types
             } else {
                 if (strpos($image->getFullPath(), "img/dummy.png") !== false) {
                     $thumbnail = $image;

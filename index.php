@@ -26,7 +26,7 @@ $dir = $fileManager->getAbsolutePhotoDir();
 if (! empty($subDir)) {
     $dir = $fileManager->concatPaths($dir, $subDir);
 }
-$content = $fileManager->scanDirRecursively($dir);
+$content = $fileManager->scanDir($dir);
 
 $thumbnailManager = new ThumbnailManager();
 $gallery = new Gallery($fileManager, $thumbnailManager);

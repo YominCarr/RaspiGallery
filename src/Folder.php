@@ -25,6 +25,11 @@ class Folder extends FileSystemEntity
         return $this->content;
     }
 
+    public function hasImages(): bool
+    {
+        return array_key_exists("images", $this->content) && sizeof($this->content["images"]) > 0;
+    }
+
     public function getRandomImage(FileManager $fileManager): Image
     {
         $s = sizeof($this->content["images"]);

@@ -52,6 +52,18 @@ class FileManager
         return array("folders" => $folders, "images" => $images);
     }
 
+    public function scanDir(string $path): array
+    {
+        if (!is_dir($path)) {
+            throw new \Exception('No such directory: ' . $path);
+        }
+
+        $folders = $this->getShallowSubfolderList($path);
+        $images = $this->getImagesList($path);
+
+        return array("folders" => $folders, "images" => $images);
+    }
+
     public function getShallowSubfolderList(string $path): array
     {
         if (!is_dir($path)) {
