@@ -15,6 +15,7 @@ class Image extends FileSystemEntity
     private $exifData;
 
     private $dummy = false;
+    private $thumbnailCreationDummy = false;
 
     public function __construct(string $name, string $fullPath, int $type, string $width, string $height,
                                 int $creationDate, int $modificationDate, ExifData $exifData)
@@ -61,6 +62,11 @@ class Image extends FileSystemEntity
     public function isDummy(): bool
     {
         return $this->dummy;
+    }
+
+    public function isThumbnailCreationDummy(): bool
+    {
+        return $this->thumbnailCreationDummy;
     }
 
     public function isValidImage(): bool
@@ -111,16 +117,17 @@ class Image extends FileSystemEntity
 
     public static function getThumbnailsGenerationDummyImage(FileManager $fileManager): Image
     {
-        return Image::getGenericDummyImage($fileManager, "thumbnailCreation.png");
+        return Image::getGenericDummyImage($fileManager, "thumbnailCreation.png", true);
     }
 
-    private static function getGenericDummyImage(FileManager $fileManager, string $name): Image
+    private static function getGenericDummyImage(FileManager $fileManager, string $name, bool $thumbnailCreationDummy = false): Image
     {
         $filePath = $fileManager->concatPaths($fileManager->pathToDir($_SERVER['DOCUMENT_ROOT']), Config::documentRoot);
         $filePath = $fileManager->concatPaths($filePath, "img/" . $name);
 
         $image = self::createImage($name, $filePath);
         $image->dummy = true;
+        $image->thumbnailCreationDummy = $thumbnailCreationDummy;
 
         return $image;
     }

@@ -79,7 +79,7 @@ class Gallery
                 $id = "folderThumbnail$i";
                 $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow", $id);
 
-                if ($thumbnail->isDummy()) {
+                if ($thumbnail->isThumbnaiLCreationDummy()) {
                     $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
                 }
 
@@ -109,7 +109,7 @@ class Gallery
             // @todo make images for download selectable and then give them the class downloadMe - not all
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "hover-shadow downloadable downloadMe", $id, "", $dataAttributes);
 
-            if ($thumbnail->isDummy()) {
+            if ($thumbnail->isThumbnaiLCreationDummy()) {
                 $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
             }
 
@@ -255,7 +255,7 @@ class Gallery
             $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
             $thumbnailHTML = $thumbnail->getDisplayHTML($this->fileManager, "demo", $id);
 
-            if ($thumbnail->isDummy()) {
+            if ($thumbnail->isThumbnaiLCreationDummy()) {
                 $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), $id);
             }
 
@@ -278,7 +278,7 @@ class Gallery
 
             $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);
 
-            if ($thumbnail->isDummy()) {
+            if ($thumbnail->isThumbnaiLCreationDummy()) {
                 $this->thumbnailManager->addThumbnailCreationRequestToBuffer($image->getName(), $image->getFullPath(), "", $thumbnailSrcId);
             }
 
