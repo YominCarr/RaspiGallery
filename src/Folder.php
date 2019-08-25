@@ -44,7 +44,7 @@ class Folder extends FileSystemEntity
             $r = rand(0, $s-1);
             return $this->content["images"][$r];
         } else {
-            return Image::getDummyImage($fileManager);
+            return Image::getNoImagesDummyImage($fileManager);
         }
     }
 
@@ -53,7 +53,7 @@ class Folder extends FileSystemEntity
         if (sizeof($this->content["images"]) > 0) {
             return $this->content["images"][0];
         } else {
-            return Image::getDummyImage($fileManager);
+            return Image::getNoImagesDummyImage($fileManager);
         }
     }
 

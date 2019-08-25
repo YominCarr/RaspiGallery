@@ -53,12 +53,17 @@ class Gallery
         for ($i = 0; $i < sizeof($folders); ++$i) {
             $folder = $folders[$i];
 
-            $image = Image::getDummyImage($this->fileManager);
             if ($folder->hasImages()) {
                 if (Config::folderThumbnailDisplay == FolderThumbnail::first) {
                     $image = $folder->getFirstImage($this->fileManager);
                 } else if (Config::folderThumbnailDisplay == FolderThumbnail::random) {
                     $image = $folder->getRandomImage($this->fileManager);
+                }
+            } else {
+                if (Config::scanMethod == ScanMethod::topLevel) {
+                    $image = Image::getDummyImage($this->fileManager); // TODO here we should replace the image by the folder name in a box
+                } else {
+                    $image = Image::getNoImagesDummyImage($this->fileManager);
                 }
             }
 

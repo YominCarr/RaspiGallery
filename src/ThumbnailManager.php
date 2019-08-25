@@ -35,7 +35,7 @@ class ThumbnailManager
             $thumbnail = Image::createImage($image->getName(), $thumbnailPath);
             return $thumbnail;
         } else {
-            return Image::getDummyImage($fileManager, $image->getName());
+            return Image::getThumbnailsGenerationDummyImage($fileManager, $image->getName());
         }
     }
 

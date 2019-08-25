@@ -46,7 +46,7 @@ class Config
     // Folders always sort by name
     const folderSortingOrder = SortingOrder::descending;
 
-    const scanMethod = ScanMethod::recursive;
+    const scanMethod = ScanMethod::topLevel;
 
     // @todo actually use something like this
     // [['folder' => '', 'password' => ''], [...], ...]
