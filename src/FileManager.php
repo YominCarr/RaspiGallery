@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/Config.php';
+require_once __DIR__ . '/IncludeHeader.php';
 require_once __DIR__ . '/Folder.php';
 require_once __DIR__ . '/Image.php';
 require_once __DIR__ . '/ImageSorter.php';
@@ -50,6 +50,33 @@ class FileManager
         $this->sortImages($images);
 
         return array("folders" => $folders, "images" => $images);
+    }
+
+    public function getShallowSubfolderList(string $path): array
+    {
+        if (!is_dir($path)) {
+            throw new \Exception('No such directory: ' . $path);
+        }
+
+        $folders = array();
+        $handle = opendir($path);
+
+        while (false !== ($value = readdir($handle))) {
+            if ($value != "." && $value != "..") {
+                $contentPath = $this->concatPaths($path, $value);
+
+                if (is_dir($contentPath) == true) {
+                    $contentPath .= DIRECTORY_SEPARATOR;
+                    array_push($folders, new Folder($value, $contentPath, []));
+                }
+            }
+        }
+
+        closedir($handle);
+
+        $this->sortFolders($folders);
+
+        return $folders;
     }
 
     public function pathToUrl(string $path): string

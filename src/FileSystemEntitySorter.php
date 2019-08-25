@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/Config.php';
+require_once __DIR__ . '/IncludeHeader.php';
 require_once __DIR__ . '/FileSystemEntity.php';
 
 class FileSystemEntitySorter

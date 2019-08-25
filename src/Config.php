@@ -20,7 +20,8 @@ class SortingOrder {
 class Config
 {
     const documentRoot = "RaspiGallery";
-    const photoDir = "sampleData";
+//    const photoDir = "sampleData";
+    const photoDir = "fotos-ssd";
     const thumbnailDir = "thumbnails";
 
     const thumbnailMaxWidth = 300;
