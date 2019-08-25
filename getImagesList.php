@@ -11,11 +11,11 @@ $dir = $fileManager->getAbsolutePhotoDir();
 if (! empty($subDir)) {
     $dir = $fileManager->concatPaths($dir, $subDir);
 }
-$folders = $fileManager->getShallowSubfolderList($dir);
+$images = $fileManager->getImagesList($dir);
 
-$folderNames = array();
-foreach ($folders as $folder) {
-    array_push($folderNames, $folder->getRelativePathToPhotoDir($fileManager));
+$imageNames = array();
+foreach ($images as $image) {
+    array_push($imageNames, $image->getRelativePathToPhotoDir($fileManager));
 }
 
-echo encapsulateDataAndResponseInJson(RESPONSE_NO_ERROR, '', $folderNames);
+echo encapsulateDataAndResponseInJson(RESPONSE_NO_ERROR, '', $imageNames);

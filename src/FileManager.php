@@ -79,6 +79,35 @@ class FileManager
         return $folders;
     }
 
+    public function getImagesList(string $path): array
+    {
+        if (!is_dir($path)) {
+            throw new \Exception('No such directory: ' . $path);
+        }
+
+        $images = array();
+        $handle = opendir($path);
+
+        while (false !== ($value = readdir($handle))) {
+            if ($value != "." && $value != "..") {
+                $contentPath = $this->concatPaths($path, $value);
+
+                if (is_dir($contentPath) == false) {
+                    $image = Image::createImage($value, $contentPath);
+                    if ($image->isValidImage()) {
+                        array_push($images, $image);
+                    }
+                }
+            }
+        }
+
+        closedir($handle);
+
+        $this->sortImages($images);
+
+        return $images;
+    }
+
     public function pathToUrl(string $path): string
     {
         return str_replace([".\\", "\\", "./"], ["", "/", ""], $path);
