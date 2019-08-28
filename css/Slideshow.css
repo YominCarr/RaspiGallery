@@ -102,6 +102,11 @@
     right: 10px;
     padding: 2px 16px;
     background-color: transparent;
+    pointer-events: none;
+}
+
+#captionContainer a {
+    pointer-events: all;
 }
 
 .caption {
