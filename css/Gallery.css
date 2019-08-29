@@ -59,3 +59,14 @@ img.hover-shadow {
 #thumbnailCreationRequests {
     display: none;
 }
+
+.fakeImageTextBox {
+    background-color: #cccccc;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}

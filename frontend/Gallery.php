@@ -61,13 +61,13 @@ class Gallery
                 }
             } else {
                 if (Config::scanMethod == ScanMethod::topLevel) {
-                    $image = Image::getDummyImage($this->fileManager); // TODO here we should replace the image by the folder name in a box
+                    $image = Image::getTextboxFakeImage($folder->getName());
                 } else {
                     $image = Image::getNoImagesDummyImage($this->fileManager);
                 }
             }
 
-            if (strpos($image->getFullPath(), "img/dummy.png") !== false) {
+            if (!$image->isValidImage() || strpos($image->getFullPath(), "img/dummy.png") !== false) { // TODO I think this can be simplified
                 $thumbnail = $image;
             } else {
                 $thumbnail = $this->thumbnailManager->getThumbnailOrDummy($this->fileManager, $image);

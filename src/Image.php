@@ -14,8 +14,8 @@ class Image extends FileSystemEntity
     private $modificationDate;
     private $exifData;
 
-    private $dummy = false;
-    private $thumbnailCreationDummy = false;
+    protected $dummy = false;
+    protected $thumbnailCreationDummy = false;
 
     public function __construct(string $name, string $fullPath, int $type, string $width, string $height,
                                 int $creationDate, int $modificationDate, ExifData $exifData)
@@ -131,6 +131,11 @@ class Image extends FileSystemEntity
 
         return $image;
     }
+
+    public static function getTextboxFakeImage(string $name): Image
+    {
+        return new FakeTextBoxImage($name);
+    }
 }
 
 class InvalidImage extends Image
@@ -139,6 +144,8 @@ class InvalidImage extends Image
     public function __construct(string $name, string $fullPath, int $type)
     {
         parent::__construct($name, $fullPath, $type, "0","0", "0", "0", new ExifData());
+        $this->dummy = true;
+        $this->thumbnailCreationDummy = false;
     }
 
     public function isValidImage(): bool
@@ -146,6 +153,28 @@ class InvalidImage extends Image
         return false;
     }
 
+}
+
+class FakeTextBoxImage extends Image
+{
+
+    public function __construct(string $name)
+    {
+        parent::__construct($name, $name, IMAGETYPE_UNKNOWN, "0","0", "0", "0", new ExifData());
+        $this->dummy = true;
+        $this->thumbnailCreationDummy = false;
+    }
+
+    public function isValidImage(): bool
+    {
+        return false;
+    }
+
+    public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = "",
+                                   array $additionalAttributes = []): string
+    {
+        return "<div class='fakeImageTextBox'>$this->name</div>";
+    }
 }
 
 // @todo how to make that private?
