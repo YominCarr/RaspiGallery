@@ -70,3 +70,11 @@ img.hover-shadow {
     height: 100%;
     position: relative;
 }
+
+.fakeImageTextBox .button {
+    white-space: normal;
+}
+
+a {
+    text-decoration: none;
+}

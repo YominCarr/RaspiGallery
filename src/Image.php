@@ -173,7 +173,7 @@ class FakeTextBoxImage extends Image
     public function getDisplayHTML(FileManager $fileManager, string $classes, string $id = "", string $alt = "",
                                    array $additionalAttributes = []): string
     {
-        return "<div class='fakeImageTextBox'>$this->name</div>";
+        return "<div class='fakeImageTextBox'><div class='button blue'>$this->name</div></div>";
     }
 }
 
