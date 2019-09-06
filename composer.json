@@ -1,55 +1,5 @@
 {
-  "name": "RaspiGallery/RaspiGallery",
-  "description": "An image gallery for raspberry pi.",
-  "type": "application",
-  "keywords": [
-    "raspberry",
-    "image",
-    "gallery"
-  ],
-  "homepage": "https://github.com/yomincarr/RaspiGallery",
-  "license": "LGPL-3.0",
-  "authors": [
-    {
-      "name": "Alexander Arth",
-      "email": "alex.arth@googlemail.com",
-      "role": "lead"
+    "require-dev": {
+        "phpunit/phpunit": "^7"
     }
-  ],
-  "support": {
-    "issues": "https://github.com/yomincarr/RaspiGallery/issues"
-  },
-  "prefer-stable": true,
-  "require": {
-    "php": "^7.1",
-    "phpunit/phpunit": "^7"
-  },
-  "require-dev": {
-    "ext-PDO": "*"
-  },
-  "config": {
-    "platform": {
-      "php": "7.1.0"
-    },
-    "optimize-autoloader": true,
-    "sort-packages": true
-  },
-  "suggest": {
-    "phpunit/php-invoker": "^2.0.0",
-    "ext-soap": "*",
-    "ext-xdebug": "*"
-  },
-  "bin": [
-    "phpunit"
-  ],
-  "autoload": {
-    "classmap": [
-      "src/"
-    ]
-  },
-  "autoload-dev": {
-    "classmap": [
-      "test/"
-    ]
-  }
 }
