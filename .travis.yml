@@ -22,7 +22,7 @@ before_script:
   - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 script:
-  - ./vendor/bin/phpunit --coverage-clover=coverage.xml test/*
+  - ./vendor/bin/phpunit --printer=Codedungeon\\PHPUnitPrettyResultPrinter\\Printer --coverage-clover=coverage.xml test/*
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
