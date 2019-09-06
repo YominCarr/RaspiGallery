@@ -19,7 +19,7 @@ class FileManager
     public function scanDir(string $path): array
     {
         if (!is_dir($path)) {
-            throw new \Exception('No such directory: ' . $path);
+            throw new Exception('No such directory: ' . $path);
         }
 
         $folders = $this->getShallowSubfolderList($path);
@@ -31,7 +31,7 @@ class FileManager
     public function scanDirDepthOne(string $path): array
     {
         if (!is_dir($path)) {
-            throw new \Exception('No such directory: ' . $path);
+            throw new Exception('No such directory: ' . $path);
         }
         error_log($path);
         $content = $this->scanDir($path);
@@ -46,7 +46,7 @@ class FileManager
     public function scanDirRecursively(string $path): array
     {
         if (!is_dir($path)) {
-            throw new \Exception('No such directory: ' . $path);
+            throw new Exception('No such directory: ' . $path);
         }
 
         $content = $this->scanDir($path);
@@ -61,7 +61,7 @@ class FileManager
     public function getShallowSubfolderList(string $path): array
     {
         if (!is_dir($path)) {
-            throw new \Exception('No such directory: ' . $path);
+            throw new Exception('No such directory: ' . $path);
         }
 
         $folders = array();
@@ -88,7 +88,7 @@ class FileManager
     public function getImagesList(string $path): array
     {
         if (!is_dir($path)) {
-            throw new \Exception('No such directory: ' . $path);
+            throw new Exception('No such directory: ' . $path);
         }
 
         $images = array();
@@ -121,7 +121,8 @@ class FileManager
 
     public function concatPaths(string $path1, string $path2): string
     {
-        $path = $path1 . DIRECTORY_SEPARATOR . $path2;
+        $separator = $path1 != "" && $path2 != "" ? DIRECTORY_SEPARATOR : "";
+        $path = $path1 . $separator . $path2;
         $path = $this->pathToDir($path);
         return $path;
     }
@@ -131,7 +132,10 @@ class FileManager
         $search = array("/", "\\", DIRECTORY_SEPARATOR . "." . DIRECTORY_SEPARATOR);
         $replace = array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
         $path = str_replace($search, $replace, $path);
-        $path = str_replace(DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $path); //clean duplicated separators
+        $count = 1;
+        while ($count) {
+            $path = str_replace(DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $path, $count); //clean duplicated separators
+        }
         return $path;
     }
 
