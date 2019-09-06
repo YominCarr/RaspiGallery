@@ -72,10 +72,7 @@
   },
   "autoload-dev": {
     "classmap": [
-      "tests/"
-    ],
-    "files": [
-      "test/Test.php"
+      "test/"
     ]
   },
   "extra": {
