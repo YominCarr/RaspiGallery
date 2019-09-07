@@ -160,7 +160,7 @@ class Gallery
 
         $str .= $this->getSlideshowCaptionHTML($images);
 
-        $str .= "<div class=\"modal-content\">";
+        $str .= "<div class=\"modal-content\" id='mainContent'>";
 
         $str .= $this->getSlideshowFullImagesHTML($images);
         $str .= $this->getSlideshowControlsHTML();
@@ -200,6 +200,7 @@ class Gallery
     {
         $str = "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>";
         $str .= "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>";
+        $str .= "<a class=\"fullscreen\" onclick=\"toggleFullscreen()\"><img id='fullscreenIcon' src='img/maximize.svg' /></a>";
         return $str;
     }
 

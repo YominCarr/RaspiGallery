@@ -1,5 +1,6 @@
 var imageIndex = 0;
 var slideShowOpen = false;
+var fullscreen = false;
 
 function openModal() {
     document.getElementById('myModal').style.display = "block";
@@ -203,4 +204,34 @@ function closeExifBlock() {
 
     var exif = document.getElementById("exif");
     exif.style.opacity = "0";
+}
+
+function toggleFullscreen() {
+    var fullscreenIcon = document.getElementById("fullscreenIcon");
+    var captionContainer = document.getElementById("captionContainer");
+    var thumbnailRows = document.getElementsByClassName("thumbnailRow");
+    var mainContent = document.getElementById("mainContent");
+    var imageContainers = document.getElementsByClassName("slideshowimagecontainer");
+    if (fullscreen) {
+        fullscreenIcon.src = "img/maximize.svg";
+        captionContainer.style.display = "inline-block";
+        [].forEach.call(thumbnailRows, function (row) {
+            row.style.display = "block";
+        });
+        mainContent.style.maxWidth = "1200px";
+        [].forEach.call(imageContainers, function (img) {
+            img.style.height = "74%";
+        });
+    } else {
+        fullscreenIcon.src = "img/minimize.svg";
+        captionContainer.style.display = "none";
+        [].forEach.call(thumbnailRows, function (row) {
+            row.style.display = "none";
+        });
+        mainContent.style.maxWidth = "unset";
+        [].forEach.call(imageContainers, function (img) {
+            img.style.height = "unset";
+        });
+    }
+    fullscreen = !fullscreen;
 }
