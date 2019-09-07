@@ -26,7 +26,7 @@ class ImageSorter extends FileSystemEntitySorter
                 break;
         }
 
-        $this->appendSortingDirectionToSorter();
+        $this->appendSortingDirectionToSorter(Config::imageSortingOrder);
     }
 
     protected function sortByCreationDateAsc(Image $a, Image $b)

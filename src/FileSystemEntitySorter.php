@@ -8,11 +8,11 @@ class FileSystemEntitySorter
     protected $sorter = "sortByFileName";
 
     public function __construct() {
-        $this->appendSortingDirectionToSorter();
+        $this->appendSortingDirectionToSorter(Config::folderSortingOrder);
     }
 
-    protected function appendSortingDirectionToSorter() {
-        switch (Config::folderSortingOrder) {
+    protected function appendSortingDirectionToSorter($sortingOrder) {
+        switch ($sortingOrder) {
             case SortingOrder::ascending:
                 $this->sorter .= "Asc";
                 break;
