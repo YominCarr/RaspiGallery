@@ -102,7 +102,75 @@ class Image extends FileSystemEntity
         $modificationDate = filemtime($filePath);
         $exif = Image::$exifReader->readExifDataFromImage($filePath);
 
-        return new Image($name, $filePath, $type, $width, $height, $creationDate, $modificationDate, $exif);
+        $originalImage = new Image($name, $filePath, $type, $width, $height, $creationDate, $modificationDate, $exif);
+        if ($name === "IMG_4642.jpg") {
+            $resizedImage = self::createResizedImage(new FileManager(), $originalImage);
+            return $resizedImage;
+        } else {
+            return $originalImage;
+        }
+    }
+
+    // TODO copy from createThumbnail
+    private static function createResizedImage(FileManager $fileManager, Image $image): Image
+    {
+        ini_set('memory_limit', '96M');
+
+        $pathToImage = $image->getFullPath();
+        $width = $image->getWidth();
+        $height = $image->getHeight();
+        $type = $image->getType();
+
+        $horizontalScale = Config::resizeWidth * 1.0 / $width;
+        $verticalScale = Config::resizeHeight * 1.0 / $height;
+        $scale = ($horizontalScale <= $verticalScale ? $horizontalScale : $verticalScale);
+
+        $scale = min($scale, 1.0); //Only scale down
+        $newWidth = $width * $scale;
+        $newHeight = $height * $scale;
+
+        if ($type == IMAGETYPE_JPEG) {
+            $srcImage = imagecreatefromjpeg($pathToImage);
+        } else if ($type == IMAGETYPE_GIF) {
+            $srcImage = imagecreatefromgif($pathToImage);
+        } else if ($type == IMAGETYPE_PNG) {
+            $srcImage = imagecreatefrompng($pathToImage);
+        }
+        if (!$srcImage) {
+            throw new \Exception('Could not read image file: ' . $pathToImage);
+        }
+
+        $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+        if ($type == IMAGETYPE_GIF || $type == IMAGETYPE_PNG) {
+            $white = imagecolorallocate($resizedImage, 255, 255, 255);
+            imagefill($resizedImage, 0, 0, $white);
+
+            imagedestroy($white);
+        }
+
+        if (Config::thumbnailResampleInsteadResize) {
+            imagecopyresampled($resizedImage, $srcImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        } else {
+            imagecopyresized($resizedImage, $srcImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        }
+
+        $resizedImagePath = Image::getPathForResizedImage($image);
+        $fileManager->createFoldersOfPath($fileManager->removeFileFromPath($resizedImagePath));
+        imagejpeg($resizedImage, $resizedImagePath, Config::resizeJPEGQuality);
+
+        imagedestroy($resizedImage);
+        imagedestroy($srcImage);
+
+        $resizedImage = new Image($image->getName(), $resizedImagePath, $type, $newWidth, $newHeight, time(), time(), new ExifData());
+        return $resizedImage;
+    }
+
+    // TODO copy from createThumbnail
+    public static function getPathForResizedImage(Image $image): string
+    {
+        $path = $image->getFullPath();
+        $path = str_replace(Config::photoDir, Config::tempDir, $path);
+        return $path;
     }
 
     public static function getDummyImage(FileManager $fileManager): Image

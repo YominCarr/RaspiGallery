@@ -26,11 +26,17 @@ class ScanMethod {
 class Config
 {
     const documentRoot = "RaspiGallery";
-    const photoDir = "sampleData";
+//    const photoDir = "sampleData";
+    const photoDir = "fotos-ssd";
     const thumbnailDir = "thumbnails";
+    const tempDir = "temp";
 
     const thumbnailMaxWidth = 300;
     const thumbnailMaxHeight = 200;
+
+    const resizeWidth = 1920;
+    const resizeHeight = 1080;
+    const resizeJPEGQuality = 75;
 
     // Set to true for better quality
     const thumbnailResampleInsteadResize = true;
