@@ -45,9 +45,17 @@
     background-color: black;
 }
 
+.slideshowimagecontainer {
+    width: 100%;
+    height: 74%;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+}
+
 .slideshowimage {
     max-width: 100%;
-    height: 74%;
+    max-height: 74%;
 }
 
 /* Next & previous buttons */

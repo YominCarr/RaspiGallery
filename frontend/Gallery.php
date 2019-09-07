@@ -182,7 +182,7 @@ class Gallery
 
             $str .= "<div class='mySlides' id='mySlide$i'>";
             $str .= "<div class='numbertext' id='numbertext$i'>$nr / $countImages</div>";
-            $str .= $this->createFullImageLinkAroundImage($image, $imageHTML, $i);
+            $str .= "<div class='slideshowimagecontainer'>" . $this->createFullImageLinkAroundImage($image, $imageHTML, $i) . "</div>";
             $str .= "</div>";
         }
         return $str;
