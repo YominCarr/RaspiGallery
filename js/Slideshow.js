@@ -195,6 +195,7 @@ function openExifBlock() {
 
     var exif = document.getElementById("exif");
     exif.style.opacity = "1";
+    exif.style.height = "unset";
 }
 
 function closeExifBlock() {
@@ -204,6 +205,7 @@ function closeExifBlock() {
 
     var exif = document.getElementById("exif");
     exif.style.opacity = "0";
+    exif.style.height = "0px";
 }
 
 function toggleFullscreen() {
