@@ -19,6 +19,9 @@
 #mainContent {
     position: relative;
     height: 75%;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
 }
 
 
