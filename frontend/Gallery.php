@@ -160,13 +160,14 @@ class Gallery
 
         $str .= $this->getSlideshowCaptionHTML($images);
 
-        $str .= "<div class=\"modal-content\" id='mainContent'>";
+        $str .= "<div class=\"modal-content\"><div id='mainContent'>";
 
         $str .= $this->getSlideshowFullImagesHTML($images);
         $str .= $this->getSlideshowControlsHTML();
+
+        $str .= "</div>";
         $str .= $this->getThumbnailsForSlideShowHTML($images);
         $str .= $this->getSlideshowImagesMetaHTML($images);
-
         $str .= "</div></div>";
         return $str;
     }
@@ -244,7 +245,7 @@ class Gallery
 
     private function getThumbnailsForSlideShowHTML(array $images): string
     {
-        $str = "<div class='thumbnailRow'>";
+        $str = "<div class='thumbnailRow slideshowThumbnailRow'>";
         for ($i = 0; $i < Config::numberImagesPerRow && $i < sizeof($images); ++$i) {
             $image = $images[$i];
             $id = "demo$i";

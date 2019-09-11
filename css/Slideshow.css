@@ -13,9 +13,14 @@
 
 /* Modal Content */
 .modal-content {
+    height: 100%
+}
+
+#mainContent {
     position: relative;
     height: 75%;
 }
+
 
 /* The Close Button */
 .close {
