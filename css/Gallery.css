@@ -34,10 +34,9 @@ h2 {
 }
 
 .thumbnailColumn {
-    float: left;
     justify-content: center;
     flex-direction: column;
-    display: flex;
+    display: inline-flex;
 }
 
 .thumbnailColumn img {
