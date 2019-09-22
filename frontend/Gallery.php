@@ -122,26 +122,12 @@ class Gallery
 
     private function getGalleryHTML(array $thumbnailHTMLs)
     {
-        $str = "<div class='gallery'><div class='thumbnailRow'>";
+        $str = "<div class='gallery'><div class='thumbnailRow thumbnailRowFlex'>";
 
-        $i = 0;
         foreach ($thumbnailHTMLs as $thumbnailHTML) {
             $str .= "<div class='thumbnailColumn'>";
             $str .= $thumbnailHTML;
             $str .= "</div>";
-
-            ++$i;
-            if ($i % Config::numberImagesPerRow == 0) {
-                $str .= "</div><div class='thumbnailRow'>";
-            }
-        }
-
-        while ($i % Config::numberImagesPerRow != 0) {
-            $str .= "<div class='thumbnailColumn'>";
-            $str .= $this->getEmptyThumbnailHTML();
-            $str .= "</div>";
-
-            ++$i;
         }
 
         $str .= "</div></div>";

@@ -33,6 +33,12 @@ h2 {
     display: table;
 }
 
+.thumbnailRowFlex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .thumbnailColumn {
     justify-content: center;
     flex-direction: column;
